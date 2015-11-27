@@ -29,7 +29,7 @@ public class TutorialCommander
 	public void leftRightForwardBackward()
 	{
 		final CommandManager cmd = drone.getCommandManager();
-		final int speed = 30; // percentage of max speed
+		final int speed = 10; // percentage of max speed
 			
 		cmd.takeOff().doFor(5000);
 		
@@ -57,4 +57,20 @@ public class TutorialCommander
 //			}			
 //		});
 	}
+
+
+	public void forward(){
+		CommandManager CommandManager = drone.getCommandManager();
+		
+		CommandManager.takeOff();
+		CommandManager.forward(10).doFor(10000);
+		
+	}
+
+	public void land() {
+		CommandManager CommandManager = drone.getCommandManager();
+		CommandManager.landing();
+		
+	}
+
 }
