@@ -1,6 +1,7 @@
 package de.yadrone.apps.tutorial;
 
 
+import de.yadrone.apps.paperchase.controller.PaperChaseKeyboardController;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.ConfigureCommand;
@@ -8,6 +9,7 @@ import de.yadrone.base.command.ControlCommand;
 import de.yadrone.base.command.ControlMode;
 import de.yadrone.base.command.EmergencyCommand;
 import de.yadrone.base.command.LEDAnimation;
+import de.yadrone.base.command.VideoChannel;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
 import de.yadrone.base.navdata.AttitudeListener;
@@ -30,6 +32,7 @@ public class TutorialMain
 			//			});
 
 			drone.start();
+			drone.getCommandManager().setVideoChannel(VideoChannel.HORI);
 
 			// Tutorial Section 2
 			new TutorialAttitudeListener(drone);
@@ -38,9 +41,9 @@ public class TutorialMain
 						new TutorialVideoListener(drone);
 
 			// Tutorial Section 4
-			TutorialCommander commander = new TutorialCommander(drone);
-			System.out.println(drone.getCommandManager().isConnected());
-			System.out.println(drone.getConfigurationManager().isConnected());
+//			TutorialCommander commander = new TutorialCommander(drone);
+//			System.out.println(drone.getCommandManager().isConnected());
+//			System.out.println(drone.getConfigurationManager().isConnected());
 
 			//			commander.animateLEDs();
 			//	commander.takeOffAndLand();
@@ -48,9 +51,10 @@ public class TutorialMain
 			//commander.forward();
 			//commander.land();
 			//drone.getCommandManager().setCommand(new ClearEmergencyCommand());
-			
-			Thread.sleep(2000);
-				
+			PaperChaseKeyboardController k = new PaperChaseKeyboardController(drone);
+			k.start();
+			Thread.sleep(10000);
+				System.err.println("Taking off");
 			drone.getCommandManager().takeOff();
 			Thread.sleep(5000);
 			drone.getCommandManager().forward(10);
@@ -59,7 +63,7 @@ public class TutorialMain
 			Thread.sleep(8000);
 			drone.landing();
 			Thread.sleep(50000);
-
+			
 
 		}
 		catch (Exception exc)
