@@ -3,10 +3,8 @@ package de.yadrone.apps.tutorial;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
-import de.yadrone.base.command.LEDAnimation;
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
-import de.yadrone.base.navdata.AttitudeListener;
 
 public class TutorialMain
 {
@@ -27,16 +25,18 @@ public class TutorialMain
 			
 			drone.start();
 			
+			
 			// Tutorial Section 2
 			new TutorialAttitudeListener(drone);
 			
 			// Tutorial Section 3
-//			new TutorialVideoListener(drone);
+			new TutorialVideoListener(drone);
 			
 			// Tutorial Section 4
-//			TutorialCommander commander = new TutorialCommander(drone);
-//			commander.animateLEDs();
-//			commander.takeOffAndLand();
+			TutorialCommander commander = new TutorialCommander(drone);
+			commander.animateLEDs();
+			commander.takeOffAndLand();
+			
 //			commander.leftRightForwardBackward();
 		}
 		catch (Exception exc)

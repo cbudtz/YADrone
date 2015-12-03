@@ -5,12 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
 
 import de.yadrone.base.IARDrone;
 import de.yadrone.base.command.VideoChannel;
@@ -18,7 +16,11 @@ import de.yadrone.base.video.ImageListener;
 
 public class TutorialVideoListener extends JFrame
 {
-    private BufferedImage image = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private BufferedImage image = null;
     
     public TutorialVideoListener(final IARDrone drone)
     {
