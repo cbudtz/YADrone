@@ -4,17 +4,16 @@ package de.yadrone.apps.tutorial;
 import de.yadrone.apps.paperchase.controller.PaperChaseKeyboardController;
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.IARDrone;
-<<<<<<< HEAD
-=======
 import de.yadrone.base.command.ConfigureCommand;
 import de.yadrone.base.command.ControlCommand;
 import de.yadrone.base.command.ControlMode;
 import de.yadrone.base.command.EmergencyCommand;
 import de.yadrone.base.command.LEDAnimation;
 import de.yadrone.base.command.VideoChannel;
->>>>>>> branch 'master' of https://github.com/cbudtz/YADrone.git
 import de.yadrone.base.exception.ARDroneException;
 import de.yadrone.base.exception.IExceptionListener;
+import de.yadrone.base.navdata.Altitude;
+import de.yadrone.base.navdata.AltitudeListener;
 
 public class TutorialMain
 {
@@ -24,6 +23,7 @@ public class TutorialMain
 		IARDrone drone = null;
 		try
 		{
+			
 			// Tutorial Section 1
 			drone = new ARDrone();
 			//			drone.addExceptionListener(new IExceptionListener() {
@@ -34,32 +34,33 @@ public class TutorialMain
 			//			});
 
 			drone.start();
-<<<<<<< HEAD
-			
-			
-=======
+
 			drone.getCommandManager().setVideoChannel(VideoChannel.HORI);
-
->>>>>>> branch 'master' of https://github.com/cbudtz/YADrone.git
 			// Tutorial Section 2
-			new TutorialAttitudeListener(drone);
-
+//			TutorialAttitudeListener alt = new TutorialAttitudeListener(drone);
+			drone.getNavDataManager().addAltitudeListener(new AltitudeListener() {
+				
+				@Override
+				public void receivedExtendedAltitude(Altitude d) {
+					System.err.println("altitude ext: " + d.getObsAlt());
+				}
+				
+				@Override
+				public void receivedAltitude(int altitude) {
+					System.out.println("altitude simple: " + altitude);
+				}
+			});
 			// Tutorial Section 3
-<<<<<<< HEAD
 			new TutorialVideoListener(drone);
 			
-=======
 						new TutorialVideoListener(drone);
 
->>>>>>> branch 'master' of https://github.com/cbudtz/YADrone.git
 			// Tutorial Section 4
-<<<<<<< HEAD
 			TutorialCommander commander = new TutorialCommander(drone);
 			commander.animateLEDs();
 			commander.takeOffAndLand();
 			
 //			commander.leftRightForwardBackward();
-=======
 //			TutorialCommander commander = new TutorialCommander(drone);
 //			System.out.println(drone.getCommandManager().isConnected());
 //			System.out.println(drone.getConfigurationManager().isConnected());
@@ -84,7 +85,6 @@ public class TutorialMain
 			Thread.sleep(50000);
 			
 
->>>>>>> branch 'master' of https://github.com/cbudtz/YADrone.git
 		}
 		catch (Exception exc)
 		{
