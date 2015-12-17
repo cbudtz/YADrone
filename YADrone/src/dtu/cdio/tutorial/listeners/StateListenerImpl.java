@@ -3,13 +3,17 @@ package dtu.cdio.tutorial.listeners;
 import de.yadrone.base.navdata.ControlState;
 import de.yadrone.base.navdata.DroneState;
 import de.yadrone.base.navdata.StateListener;
+import dtu.cdio.tutorial.TutorialMain;
 import dtu.cdio.tutorial.gui.DroneVariablesGUI;
 
 public class StateListenerImpl implements StateListener {
 
 	private DroneVariablesGUI gui;
-	public StateListenerImpl(DroneVariablesGUI gui){
+	
+	public TutorialMain test;
+	public StateListenerImpl(DroneVariablesGUI gui, TutorialMain test){
 		this.gui = gui;
+		this.test = test;
 	}
 	@Override
 	public void stateChanged(DroneState state) {
@@ -52,8 +56,9 @@ public class StateListenerImpl implements StateListener {
 			gui.setStateVideoThreadOn(state.isVideoThreadOn());
 			gui.setStateVisionDefined(state.isVisionDefined());
 			gui.setStateVisionEnabled(state.isVisionEnabled());
-
 		}
+		
+		test.isFlying = state.isFlying();
 	}
 
 	@Override
