@@ -2,3 +2,5 @@ bin
 dist
 .metadata
 /controlcenter.properties
+/opencv3.0.0
+/YADrone.iml
