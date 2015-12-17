@@ -27,7 +27,7 @@ public class TutorialMain implements ActionListener
 	private ARDrone drone;
 	private StateListener stateListener;
 	public volatile boolean isFlying = false;
-	public int speed = 0;
+	public int speed = 5;
 	public static void main(String[] args)
 	{
 		new TutorialMain().run();
@@ -40,7 +40,8 @@ public class TutorialMain implements ActionListener
 			// Tutorial Section 1
 			drone = new ARDrone();
 			drone.start();
-
+			drone.getCommandManager().flatTrim();
+//			drone.getCommandManager().m
 			//			drone.getCommandManager().setVideoChannel(VideoChannel.HORI);
 
 			// Tutorial Section 3
@@ -268,28 +269,7 @@ public class TutorialMain implements ActionListener
 			//				System.err.println("was in emergency");
 			//				drone.getCommandManager().setCommand(new EmergencyCommand());
 			//			}
-//			drone.getCommandManager().takeOff();
-//			drone.getCommandManager().hover();
-//
-//			Scanner s = new Scanner(System.in);
-//			int speed = 10;
-//			while(true){
-//				String in = s.nextLine();
-//				if(in.equals("q")) break;
-//
-//				switch(in){
-//				case "u":
-//					drone.getCommandManager().up((speed += 10));
-//					break;
-//				case "d":
-//					drone.getCommandManager().down((speed -= 10));
-//					break;
-//
-//				default: break;
-//				}
-//			}
-//			s.close();
-//			drone.landing();
+
 
 		}
 		catch (Exception exc)
@@ -316,11 +296,12 @@ public class TutorialMain implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		
-		if(cmd.equals(ButtonCmd.LAND)) drone.getCommandManager().landing();
-		else if(cmd.equals(ButtonCmd.TAKE_OFF)) drone.getCommandManager().takeOff();
-		else if(cmd.equals(ButtonCmd.SPEED_DOWN)) drone.getCommandManager().down(speed -= gui.getSpeedDecr());
-		else if(cmd.equals(ButtonCmd.SPEED_UP)) drone.getCommandManager().up(speed += gui.getSpeedIncr());
-		else if(cmd.equals(ButtonCmd.EMERGENCY)) drone.getCommandManager().emergency();
+		if(cmd.equals(ButtonCmd.LAND.name())) drone.getCommandManager().landing();
+		else if(cmd.equals(ButtonCmd.TAKE_OFF.name())) drone.getCommandManager().takeOff();
+		else if(cmd.equals(ButtonCmd.SPEED_DOWN.name())) drone.getCommandManager().down(speed -= gui.getSpeedDecr());
+		else if(cmd.equals(ButtonCmd.SPEED_UP.name())) drone.getCommandManager().up(speed += gui.getSpeedIncr());
+		else if(cmd.equals(ButtonCmd.EMERGENCY.name())) drone.getCommandManager().emergency();
+		else if(cmd.equals(ButtonCmd.TRIM.name())) drone.getCommandManager().flatTrim();
 		else System.err.println("unknown button command");
 		
 		

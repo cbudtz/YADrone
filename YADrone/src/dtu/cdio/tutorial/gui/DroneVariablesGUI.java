@@ -84,8 +84,9 @@ public class DroneVariablesGUI extends JFrame{
 	private JButton land;
 	private JButton takeOff;
 	private JButton btnEmergency;
+	private JButton trim;
 	
-	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY};
+	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM};
 	
 	public DroneVariablesGUI(){
 		setSize(848, 716);
@@ -531,6 +532,11 @@ public class DroneVariablesGUI extends JFrame{
 		btnEmergency.setBounds(501, 35, 96, 35);
 		getContentPane().add(btnEmergency);
 		
+		trim = new JButton("Trim");
+		trim.setActionCommand(ButtonCmd.TRIM.name());
+		trim.setBounds(501, 83, 96, 35);
+		getContentPane().add(trim);
+		
 		setVisible(true);
 	}
 
@@ -726,6 +732,7 @@ public class DroneVariablesGUI extends JFrame{
 		this.speedDown.addActionListener(listener);
 		this.speedUp.addActionListener(listener);
 		this.btnEmergency.addActionListener(listener);
+		this.trim.addActionListener(listener);
 		
 	}
 	
