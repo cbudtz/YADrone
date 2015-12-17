@@ -28,7 +28,7 @@ public class TutorialMain implements ActionListener
 	private ARDrone drone;
 	private StateListener stateListener;
 	public volatile boolean isFlying = false;
-	public int speed = 5;
+	public int speed = 25;
 	public static void main(String[] args)
 	{
 		new TutorialMain().run();
@@ -300,8 +300,8 @@ public class TutorialMain implements ActionListener
 		
 		if(cmd.equals(ButtonCmd.LAND.name())) drone.getCommandManager().landing();
 		else if(cmd.equals(ButtonCmd.TAKE_OFF.name())) drone.getCommandManager().takeOff();
-		else if(cmd.equals(ButtonCmd.SPEED_DOWN.name())) drone.getCommandManager().down(speed -= gui.getSpeedDecr());
-		else if(cmd.equals(ButtonCmd.SPEED_UP.name())) drone.getCommandManager().up(speed += gui.getSpeedIncr());
+		else if(cmd.equals(ButtonCmd.SPEED_DOWN.name())) drone.setSpeed(speed -= gui.getSpeedDecr());
+		else if(cmd.equals(ButtonCmd.SPEED_UP.name())) drone.setSpeed(speed += gui.getSpeedIncr());
 		else if(cmd.equals(ButtonCmd.EMERGENCY.name())) drone.getCommandManager().emergency();
 		else if(cmd.equals(ButtonCmd.TRIM.name())) drone.getCommandManager().flatTrim();
 		else System.err.println("unknown button command");
