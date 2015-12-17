@@ -170,7 +170,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblCtrlState);
 		
 		ctrlState = new JTextField();
-		ctrlState.setBounds(80, 349, 61, 22);
+		ctrlState.setBounds(80, 349, 129, 22);
 		getContentPane().add(ctrlState);
 		ctrlState.setColumns(10);
 		
@@ -179,7 +179,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblDroneState);
 		
 		droneState = new JTextField();
-		droneState.setBounds(80, 378, 61, 22);
+		droneState.setBounds(80, 378, 129, 22);
 		getContentPane().add(droneState);
 		droneState.setColumns(10);
 		
@@ -188,7 +188,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblPressure);
 		
 		pressure = new JTextField();
-		pressure.setBounds(80, 410, 61, 22);
+		pressure.setBounds(80, 410, 129, 22);
 		getContentPane().add(pressure);
 		pressure.setColumns(10);
 		setVisible(true);
