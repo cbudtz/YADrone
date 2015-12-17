@@ -12,6 +12,10 @@ import javax.swing.JButton;
 
 public class DroneVariablesGUI extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int width = 500;
 	private final int height = 400;
 	private final String title = "Drone navdata";
@@ -85,6 +89,18 @@ public class DroneVariablesGUI extends JFrame{
 	private JButton takeOff;
 	private JButton btnEmergency;
 	private JButton trim;
+	private JLabel lblGyro;
+	private JTextField gyroXVal;
+	private JTextField gyroXOffset;
+	private JLabel lblValueHeader;
+	private JLabel lblOffset;
+	private JLabel lblX;
+	private JLabel lblY;
+	private JTextField gyroYVal;
+	private JTextField gyroYOffset;
+	private JLabel lblZ;
+	private JTextField gyroZVal;
+	private JTextField gyroZOffset;
 	
 	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM};
 	
@@ -537,6 +553,66 @@ public class DroneVariablesGUI extends JFrame{
 		trim.setBounds(501, 83, 96, 35);
 		getContentPane().add(trim);
 		
+		lblGyro = new JLabel("gyro");
+		lblGyro.setBounds(233, 13, 38, 16);
+		getContentPane().add(lblGyro);
+		
+		lblValueHeader = new JLabel("value");
+		lblValueHeader.setBounds(286, 13, 56, 16);
+		getContentPane().add(lblValueHeader);
+		
+		lblOffset = new JLabel("offset");
+		lblOffset.setBounds(353, 13, 56, 16);
+		getContentPane().add(lblOffset);
+		
+		lblX = new JLabel("X:");
+		lblX.setBounds(235, 44, 25, 16);
+		getContentPane().add(lblX);
+		
+		lblY = new JLabel("Y:");
+		lblY.setBounds(235, 73, 25, 16);
+		getContentPane().add(lblY);
+		
+		lblZ = new JLabel("Z:");
+		lblZ.setBounds(235, 102, 25, 16);
+		getContentPane().add(lblZ);
+		
+		gyroYVal = new JTextField();
+		gyroYVal.setEnabled(false);
+		gyroYVal.setColumns(10);
+		gyroYVal.setBounds(286, 70, 56, 22);
+		getContentPane().add(gyroYVal);
+		
+		gyroXVal = new JTextField();
+		gyroXVal.setEnabled(false);
+		gyroXVal.setColumns(10);
+		gyroXVal.setBounds(286, 41, 56, 22);
+		getContentPane().add(gyroXVal);
+		
+		gyroZVal = new JTextField();
+		gyroZVal.setEnabled(false);
+		gyroZVal.setColumns(10);
+		gyroZVal.setBounds(286, 99, 56, 22);
+		getContentPane().add(gyroZVal);
+		
+		gyroXOffset = new JTextField();
+		gyroXOffset.setEnabled(false);
+		gyroXOffset.setColumns(10);
+		gyroXOffset.setBounds(351, 41, 56, 22);
+		getContentPane().add(gyroXOffset);
+		
+		gyroYOffset = new JTextField();
+		gyroYOffset.setEnabled(false);
+		gyroYOffset.setColumns(10);
+		gyroYOffset.setBounds(351, 70, 56, 22);
+		getContentPane().add(gyroYOffset);
+		
+		gyroZOffset = new JTextField();
+		gyroZOffset.setEnabled(false);
+		gyroZOffset.setColumns(10);
+		gyroZOffset.setBounds(351, 99, 56, 22);
+		getContentPane().add(gyroZOffset);
+		
 		setVisible(true);
 	}
 
@@ -724,6 +800,30 @@ public class DroneVariablesGUI extends JFrame{
 
 	public void setStateVisionEnabled(boolean b){
 		this.stateVisionEnabled.setBackground(b ? Color.green : Color.red);
+	}
+	
+	public void setGyroXVal(float val){
+		this.gyroXVal.setText(String.valueOf(val));
+	}
+	
+	public void setGyroXOffset(float val){
+		this.gyroXOffset.setText(String.valueOf(val));
+	}
+	
+	public void setGyroYVal(float val){
+		this.gyroYVal.setText(String.valueOf(val));
+	}
+	
+	public void setGyroYOffset(float val){
+		this.gyroYOffset.setText(String.valueOf(val));
+	}
+	
+	public void setGyroZVal(float val){
+		this.gyroZVal.setText(String.valueOf(val));
+	}
+	
+	public void setGyroZOffset(float val){
+		this.gyroZOffset.setText(String.valueOf(val));
 	}
 	
 	public void addButtonListener(ActionListener listener){
