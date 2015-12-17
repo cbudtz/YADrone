@@ -3,7 +3,12 @@ package dtu.cdio.tutorial.gui;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import java.awt.Button;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 
 public class DroneVariablesGUI extends JFrame{
 
@@ -71,7 +76,16 @@ public class DroneVariablesGUI extends JFrame{
 	private JLabel stateVideoThreadOn;
 	private JLabel stateVisionDefined;
 	private JLabel stateVisionEnabled;
+	private JButton speedUp;
+	private JLabel lblSpeedUp;
+	private JTextField speedIncr;
+	private JButton speedDown;
+	private JTextField speedDecr;
+	private JButton land;
+	private JButton takeOff;
+	private JButton btnEmergency;
 	
+	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY};
 	
 	public DroneVariablesGUI(){
 		setSize(848, 716);
@@ -84,6 +98,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblSpeed);
 		
 		speed = new JTextField();
+		speed.setEnabled(false);
 		speed.setBounds(80, 41, 61, 22);
 		getContentPane().add(speed);
 		speed.setColumns(10);
@@ -93,6 +108,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblAltitude);
 		
 		altitude = new JTextField();
+		altitude.setEnabled(false);
 		altitude.setColumns(10);
 		altitude.setBounds(80, 70, 61, 22);
 		getContentPane().add(altitude);
@@ -110,6 +126,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblPitch);
 		
 		pitchComp = new JTextField();
+		pitchComp.setEnabled(false);
 		pitchComp.setBounds(80, 146, 61, 22);
 		getContentPane().add(pitchComp);
 		pitchComp.setColumns(10);
@@ -119,6 +136,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblRoll);
 		
 		rollComp = new JTextField();
+		rollComp.setEnabled(false);
 		rollComp.setColumns(10);
 		rollComp.setBounds(80, 175, 61, 22);
 		getContentPane().add(rollComp);
@@ -132,6 +150,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblPitch_1);
 		
 		pitchUpdated = new JTextField();
+		pitchUpdated.setEnabled(false);
 		pitchUpdated.setColumns(10);
 		pitchUpdated.setBounds(80, 233, 61, 22);
 		getContentPane().add(pitchUpdated);
@@ -141,6 +160,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblRoll_1);
 		
 		rollUpdated = new JTextField();
+		rollUpdated.setEnabled(false);
 		rollUpdated.setColumns(10);
 		rollUpdated.setBounds(80, 262, 61, 22);
 		getContentPane().add(rollUpdated);
@@ -150,6 +170,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblYaw);
 		
 		yawUpdated = new JTextField();
+		yawUpdated.setEnabled(false);
 		yawUpdated.setColumns(10);
 		yawUpdated.setBounds(80, 291, 61, 22);
 		getContentPane().add(yawUpdated);
@@ -159,6 +180,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblBattery);
 		
 		battery = new JTextField();
+		battery.setEnabled(false);
 		battery.setColumns(10);
 		battery.setBounds(80, 320, 61, 22);
 		getContentPane().add(battery);
@@ -168,36 +190,43 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblValue);
 		
 		speedMaxDelta = new JTextField();
+		speedMaxDelta.setEnabled(false);
 		speedMaxDelta.setBounds(153, 41, 56, 22);
 		getContentPane().add(speedMaxDelta);
 		speedMaxDelta.setColumns(10);
 		
 		altitudeMaxDelta = new JTextField();
+		altitudeMaxDelta.setEnabled(false);
 		altitudeMaxDelta.setColumns(10);
 		altitudeMaxDelta.setBounds(153, 70, 56, 22);
 		getContentPane().add(altitudeMaxDelta);
 		
 		pitchCompMaxDelta = new JTextField();
+		pitchCompMaxDelta.setEnabled(false);
 		pitchCompMaxDelta.setColumns(10);
 		pitchCompMaxDelta.setBounds(153, 146, 56, 22);
 		getContentPane().add(pitchCompMaxDelta);
 		
 		rollCompMaxDelta = new JTextField();
+		rollCompMaxDelta.setEnabled(false);
 		rollCompMaxDelta.setColumns(10);
 		rollCompMaxDelta.setBounds(153, 175, 56, 22);
 		getContentPane().add(rollCompMaxDelta);
 		
 		pitchUpdatedMaxDelta = new JTextField();
+		pitchUpdatedMaxDelta.setEnabled(false);
 		pitchUpdatedMaxDelta.setColumns(10);
 		pitchUpdatedMaxDelta.setBounds(153, 233, 56, 22);
 		getContentPane().add(pitchUpdatedMaxDelta);
 		
 		rollUpdatedMaxDelta = new JTextField();
+		rollUpdatedMaxDelta.setEnabled(false);
 		rollUpdatedMaxDelta.setColumns(10);
 		rollUpdatedMaxDelta.setBounds(153, 262, 56, 22);
 		getContentPane().add(rollUpdatedMaxDelta);
 		
 		yawUpdatedMaxDelta = new JTextField();
+		yawUpdatedMaxDelta.setEnabled(false);
 		yawUpdatedMaxDelta.setColumns(10);
 		yawUpdatedMaxDelta.setBounds(153, 291, 56, 22);
 		getContentPane().add(yawUpdatedMaxDelta);
@@ -211,6 +240,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblCtrlState);
 		
 		ctrlState = new JTextField();
+		ctrlState.setEnabled(false);
 		ctrlState.setBounds(80, 349, 129, 22);
 		getContentPane().add(ctrlState);
 		ctrlState.setColumns(10);
@@ -220,6 +250,7 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(lblPressure);
 		
 		pressure = new JTextField();
+		pressure.setEnabled(false);
 		pressure.setBounds(80, 636, 129, 22);
 		getContentPane().add(pressure);
 		pressure.setColumns(10);
@@ -458,6 +489,48 @@ public class DroneVariablesGUI extends JFrame{
 		stateUserFeedbackOn.setBounds(12, 549, 96, 16);
 		getContentPane().add(stateUserFeedbackOn);
 		
+		speedUp = new JButton("<html>&#9650</html>");
+		speedUp.setBounds(774, 35, 44, 35);
+		getContentPane().add(speedUp);
+		speedUp.setActionCommand(ButtonCmd.SPEED_UP.name());
+		
+		lblSpeedUp = new JLabel("speed");
+		lblSpeedUp.setBounds(774, 13, 44, 16);
+		getContentPane().add(lblSpeedUp);
+		
+		speedIncr = new JTextField();
+		speedIncr.setText("10");
+		speedIncr.setBounds(717, 41, 44, 22);
+		getContentPane().add(speedIncr);
+		speedIncr.setColumns(10);
+		
+		speedDown = new JButton("<html>&#9660</html>");
+		speedDown.setBounds(774, 83, 44, 35);
+		getContentPane().add(speedDown);
+		speedDown.setActionCommand(ButtonCmd.SPEED_DOWN.name());
+		
+		
+		speedDecr = new JTextField();
+		speedDecr.setText("10");
+		speedDecr.setColumns(10);
+		speedDecr.setBounds(717, 89, 44, 22);
+		getContentPane().add(speedDecr);
+		
+		land = new JButton("Land");
+		land.setBounds(603, 35, 96, 35);
+		getContentPane().add(land);
+		land.setActionCommand(ButtonCmd.LAND.name());
+		
+		takeOff = new JButton("Take off");
+		takeOff.setBounds(603, 83, 96, 35);
+		getContentPane().add(takeOff);
+		takeOff.setActionCommand(ButtonCmd.TAKE_OFF.name());
+		
+		btnEmergency = new JButton("Emergency");
+		btnEmergency.setActionCommand(ButtonCmd.EMERGENCY.name());
+		btnEmergency.setBounds(501, 35, 96, 35);
+		getContentPane().add(btnEmergency);
+		
 		setVisible(true);
 	}
 
@@ -647,5 +720,28 @@ public class DroneVariablesGUI extends JFrame{
 		this.stateVisionEnabled.setBackground(b ? Color.green : Color.red);
 	}
 	
+	public void addButtonListener(ActionListener listener){
+		this.land.addActionListener(listener);
+		this.takeOff.addActionListener(listener);
+		this.speedDown.addActionListener(listener);
+		this.speedUp.addActionListener(listener);
+		this.btnEmergency.addActionListener(listener);
+		
+	}
 	
+	public int getSpeedIncr(){
+		try{
+		return Math.abs(Integer.valueOf(this.speedIncr.getText()));
+		}catch(Exception e){
+			return 1;
+		}
+	}
+	
+	public int getSpeedDecr(){
+		try{
+			return Math.abs(Integer.valueOf(this.speedDecr.getText()));
+		}catch(Exception e){
+			return 1;
+		}
+	}
 }

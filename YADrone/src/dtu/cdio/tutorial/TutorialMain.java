@@ -1,6 +1,8 @@
 package dtu.cdio.tutorial;
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 import de.yadrone.base.ARDrone;
@@ -9,6 +11,7 @@ import de.yadrone.base.navdata.ControlState;
 import de.yadrone.base.navdata.DroneState;
 import de.yadrone.base.navdata.StateListener;
 import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DroneVariablesGUI.ButtonCmd;
 import dtu.cdio.tutorial.listeners.AltitudeListenerImpl;
 import dtu.cdio.tutorial.listeners.AttitudeListenerImpl;
 import dtu.cdio.tutorial.listeners.BatteryListenerImpl;
@@ -16,13 +19,15 @@ import dtu.cdio.tutorial.listeners.PressureListenerImpl;
 import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
 import dtu.cdio.tutorial.listeners.StateListenerImpl;
 
-public class TutorialMain
+public class TutorialMain implements ActionListener
 {
 
 	private boolean emergency = false;
+	DroneVariablesGUI gui;
 	private ARDrone drone;
 	private StateListener stateListener;
 	public volatile boolean isFlying = false;
+	public int speed = 0;
 	public static void main(String[] args)
 	{
 		new TutorialMain().run();
@@ -31,7 +36,7 @@ public class TutorialMain
 
 		try
 		{
-			DroneVariablesGUI gui = new DroneVariablesGUI();
+			gui = new DroneVariablesGUI();
 			// Tutorial Section 1
 			drone = new ARDrone();
 			drone.start();
@@ -50,9 +55,9 @@ public class TutorialMain
 			drone.getNavDataManager().addBatteryListener(new BatteryListenerImpl(gui));
 			stateListener = new StateListenerImpl(gui, this);
 			drone.getNavDataManager().addStateListener(stateListener);
-
+			
 			drone.getNavDataManager().addPressureListener(new PressureListenerImpl(gui));
-
+			gui.addButtonListener(this);
 			//			drone.getNavDataManager().addAcceleroListener(new AcceleroListener() {
 			//
 			//				@Override
@@ -263,40 +268,40 @@ public class TutorialMain
 			//				System.err.println("was in emergency");
 			//				drone.getCommandManager().setCommand(new EmergencyCommand());
 			//			}
-			drone.getCommandManager().takeOff();
-			drone.getCommandManager().hover();
-
-			Scanner s = new Scanner(System.in);
-			int speed = 10;
-			while(true){
-				String in = s.nextLine();
-				if(in.equals("q")) break;
-
-				switch(in){
-				case "u":
-					drone.getCommandManager().up((speed += 10));
-					break;
-				case "d":
-					drone.getCommandManager().down((speed -= 10));
-					break;
-
-				default: break;
-				}
-			}
-			s.close();
-			drone.landing();
+//			drone.getCommandManager().takeOff();
+//			drone.getCommandManager().hover();
+//
+//			Scanner s = new Scanner(System.in);
+//			int speed = 10;
+//			while(true){
+//				String in = s.nextLine();
+//				if(in.equals("q")) break;
+//
+//				switch(in){
+//				case "u":
+//					drone.getCommandManager().up((speed += 10));
+//					break;
+//				case "d":
+//					drone.getCommandManager().down((speed -= 10));
+//					break;
+//
+//				default: break;
+//				}
+//			}
+//			s.close();
+//			drone.landing();
 
 		}
 		catch (Exception exc)
 		{
 			exc.printStackTrace();
 		}
-		finally
-		{
-			if (drone != null)
-				while(isFlying){};
-				drone.stop();
-		}
+//		finally
+//		{
+//			if (drone != null)
+//				while(isFlying){};
+//				drone.stop();
+//		}
 	}
 
 	public void delay(long ms){
@@ -306,5 +311,18 @@ public class TutorialMain
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+		
+		if(cmd.equals(ButtonCmd.LAND)) drone.getCommandManager().landing();
+		else if(cmd.equals(ButtonCmd.TAKE_OFF)) drone.getCommandManager().takeOff();
+		else if(cmd.equals(ButtonCmd.SPEED_DOWN)) drone.getCommandManager().down(speed -= gui.getSpeedDecr());
+		else if(cmd.equals(ButtonCmd.SPEED_UP)) drone.getCommandManager().up(speed += gui.getSpeedIncr());
+		else if(cmd.equals(ButtonCmd.EMERGENCY)) drone.getCommandManager().emergency();
+		else System.err.println("unknown button command");
+		
+		
 	}
 }
