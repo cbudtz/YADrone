@@ -11,6 +11,7 @@ public class AltitudeListenerImpl implements AltitudeListener {
 	private int maxDeltaAltitude = 0;
 	public AltitudeListenerImpl(DroneVariablesGUI gui) {
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("altitude listener");
 	}
 	@Override
 	public void receivedAltitude(int altitude) {

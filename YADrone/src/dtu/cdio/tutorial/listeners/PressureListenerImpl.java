@@ -10,6 +10,7 @@ public class PressureListenerImpl implements PressureListener {
 	private DroneVariablesGUI gui;
 	public PressureListenerImpl(DroneVariablesGUI gui) {
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("pressure listener");
 	}
 
 	@Override

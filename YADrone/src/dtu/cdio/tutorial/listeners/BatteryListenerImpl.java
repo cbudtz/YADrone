@@ -11,6 +11,7 @@ public class BatteryListenerImpl implements BatteryListener {
 	
 	public BatteryListenerImpl(DroneVariablesGUI gui) {
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("battery listener");
 	}
 
 	@Override

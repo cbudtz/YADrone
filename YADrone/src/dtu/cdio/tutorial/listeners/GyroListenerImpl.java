@@ -10,6 +10,7 @@ public class GyroListenerImpl implements GyroListener{
 	private DroneVariablesGUI gui;
 	public GyroListenerImpl(DroneVariablesGUI gui) {
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("Gyro listener");
 	}
 	@Override
 	public void receivedRawData(GyroRawData d) {

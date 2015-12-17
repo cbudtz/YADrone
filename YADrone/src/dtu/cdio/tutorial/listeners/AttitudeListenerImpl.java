@@ -23,6 +23,7 @@ public class AttitudeListenerImpl implements AttitudeListener {
 	
 	public AttitudeListenerImpl(DroneVariablesGUI gui) {
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("attitude listener");
 	}
 
 	@Override

@@ -6,6 +6,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/YADrone"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openCV3.0.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/YADroneDTU"/>
-	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

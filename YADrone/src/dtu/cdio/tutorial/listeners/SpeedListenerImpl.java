@@ -10,6 +10,7 @@ public class SpeedListenerImpl implements ISpeedListener {
 	private DroneVariablesGUI gui;
 	public SpeedListenerImpl(DroneVariablesGUI gui){
 		this.gui = gui;
+		if(gui != null) gui.addListenerName("speed listener");
 	}
 	@Override
 	public void speedUpdated(int speed) {

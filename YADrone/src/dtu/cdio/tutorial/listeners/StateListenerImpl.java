@@ -14,6 +14,7 @@ public class StateListenerImpl implements StateListener {
 	public StateListenerImpl(DroneVariablesGUI gui, TutorialMain test){
 		this.gui = gui;
 		this.test = test;
+		if(gui != null) gui.addListenerName("state listener");
 	}
 	@Override
 	public void stateChanged(DroneState state) {
