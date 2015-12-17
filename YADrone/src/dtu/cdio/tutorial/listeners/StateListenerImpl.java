@@ -7,20 +7,18 @@ import dtu.cdio.tutorial.gui.DroneVariablesGUI;
 
 public class StateListenerImpl implements StateListener {
 
-	
+	private DroneVariablesGUI gui;
 	public StateListenerImpl(DroneVariablesGUI gui){
-		
+		this.gui = gui;
 	}
 	@Override
 	public void stateChanged(DroneState state) {
-		// TODO Auto-generated method stub
-
+		if(gui != null) gui.setDroneState(state.toString());
 	}
 
 	@Override
 	public void controlStateChanged(ControlState state) {
-		// TODO Auto-generated method stub
-
+		if(gui != null) gui.setCtrlState(state.name());
 	}
 
 }

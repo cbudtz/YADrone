@@ -10,7 +10,9 @@ import dtu.cdio.tutorial.gui.DroneVariablesGUI;
 import dtu.cdio.tutorial.listeners.AltitudeListenerImpl;
 import dtu.cdio.tutorial.listeners.AttitudeListenerImpl;
 import dtu.cdio.tutorial.listeners.BatteryListenerImpl;
+import dtu.cdio.tutorial.listeners.PressureListenerImpl;
 import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
+import dtu.cdio.tutorial.listeners.StateListenerImpl;
 
 public class TutorialMain
 {
@@ -42,6 +44,8 @@ public class TutorialMain
 			drone.getNavDataManager().addAttitudeListener(new AttitudeListenerImpl(gui));
 			drone.getNavDataManager().addAltitudeListener(new AltitudeListenerImpl(gui));
 			drone.getNavDataManager().addBatteryListener(new BatteryListenerImpl(gui));
+			drone.getNavDataManager().addStateListener(new StateListenerImpl(gui));
+			drone.getNavDataManager().addPressureListener(new PressureListenerImpl(gui));
 			
 //			drone.getNavDataManager().addAcceleroListener(new AcceleroListener() {
 //

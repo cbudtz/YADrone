@@ -25,10 +25,15 @@ public class DroneVariablesGUI extends JFrame{
 	private JTextField pitchUpdatedMaxDelta;
 	private JTextField rollUpdatedMaxDelta;
 	private JTextField yawUpdatedMaxDelta;
-	private JTextField batteryMaxDelta;
+	private JLabel lblCtrlState;
+	private JTextField ctrlState;
+	private JLabel lblDroneState;
+	private JTextField droneState;
+	private JLabel lblPressure;
+	private JTextField pressure;
 	
 	public DroneVariablesGUI(){
-		setSize(width, height);
+		setSize(500, 554);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle(title);
 		getContentPane().setLayout(null);
@@ -156,14 +161,36 @@ public class DroneVariablesGUI extends JFrame{
 		yawUpdatedMaxDelta.setBounds(153, 291, 56, 22);
 		getContentPane().add(yawUpdatedMaxDelta);
 		
-		batteryMaxDelta = new JTextField();
-		batteryMaxDelta.setColumns(10);
-		batteryMaxDelta.setBounds(153, 320, 56, 22);
-		getContentPane().add(batteryMaxDelta);
-		
 		JLabel lblMaxDelta = new JLabel("max delta");
 		lblMaxDelta.setBounds(153, 13, 68, 16);
 		getContentPane().add(lblMaxDelta);
+		
+		lblCtrlState = new JLabel("ctrl state");
+		lblCtrlState.setBounds(12, 352, 56, 16);
+		getContentPane().add(lblCtrlState);
+		
+		ctrlState = new JTextField();
+		ctrlState.setBounds(80, 349, 61, 22);
+		getContentPane().add(ctrlState);
+		ctrlState.setColumns(10);
+		
+		lblDroneState = new JLabel("drone state");
+		lblDroneState.setBounds(12, 381, 68, 16);
+		getContentPane().add(lblDroneState);
+		
+		droneState = new JTextField();
+		droneState.setBounds(80, 378, 61, 22);
+		getContentPane().add(droneState);
+		droneState.setColumns(10);
+		
+		lblPressure = new JLabel("pressure");
+		lblPressure.setBounds(12, 410, 56, 16);
+		getContentPane().add(lblPressure);
+		
+		pressure = new JTextField();
+		pressure.setBounds(80, 410, 61, 22);
+		getContentPane().add(pressure);
+		pressure.setColumns(10);
 		setVisible(true);
 	}
 
@@ -197,5 +224,9 @@ public class DroneVariablesGUI extends JFrame{
 
 	public void setYawUpdatedMaxDelta(float yawUpdatedMaxDelta) {this.yawUpdatedMaxDelta.setText(String.valueOf(yawUpdatedMaxDelta)); }
 
-	public void setBatteryMaxDelta(int batteryMaxDelta) { this.batteryMaxDelta.setText(String.valueOf(batteryMaxDelta)); }
+	public void setCtrlState(String name) { this.ctrlState.setText(name);}
+	
+	public void setDroneState(String name) {this.droneState.setText(name);}
+	
+	public void setPressure(String val) {this.pressure.setText(val);}
 }
