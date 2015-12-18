@@ -51,7 +51,7 @@ public class VideoListenerImpl implements ImageListener {
 		MatOfPoint line2 = new MatOfPoint(new Point(rawImg.cols()/2, rawImg.rows()/2-20), new Point(rawImg.cols()/2, rawImg.rows()/2+20));
 		lines.add(line2);
 		lines.add(line1);
-		Imgproc.drawContours(rawImg, lines, lines.size(), new Scalar(0,255,0), 2);
+		Imgproc.drawContours(rawImg, lines, -1, new Scalar(0,255,0), 2);
 		if(!showRawImg) gui.setImage(Mat2BufferedImage(rawImg));
 	}
 	

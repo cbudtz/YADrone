@@ -656,6 +656,8 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		alarmStates.add(stateMotorsDown);
 		alarmStates.add(stateSoftwareFaultDetected);
 		alarmStates.add(stateUserEmergencyLanding);
+		alarmStates.add(stateAngelsOutOfRange);
+		alarmStates.add(stateTooMuchWind);
 	}
 	public void setSpeed(int speed) {this.speed.setText(String.valueOf(speed));	}
 
@@ -925,7 +927,8 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				for(JLabel l : alarmStates){
+				
+				for(JLabel l : alarmStates){					
 					if(l.getBackground().equals(alarmOnColor))
 						l.setBackground(alarmOnBlinkColor);
 					else if(l.getBackground().equals(alarmOnBlinkColor))
