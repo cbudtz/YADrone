@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.command.EmergencyCommand;
+import de.yadrone.base.command.LEDAnimation;
 import de.yadrone.base.navdata.ControlState;
 import de.yadrone.base.navdata.DroneState;
 import de.yadrone.base.navdata.StateListener;
@@ -29,7 +30,6 @@ public class TutorialMain implements ActionListener
 	private ARDrone drone;
 	private StateListener stateListener;
 	public volatile boolean isFlying = false;
-	public int speed = 25;
 	public static void main(String[] args)
 	{
 		new TutorialMain().run();
@@ -39,6 +39,7 @@ public class TutorialMain implements ActionListener
 		try
 		{
 			gui = new DroneVariablesGUI();
+			gui.setAnimationOptions(LEDAnimation.values());
 			new Thread(gui).start();
 			// Tutorial Section 1
 			drone = new ARDrone();
@@ -303,12 +304,16 @@ public class TutorialMain implements ActionListener
 		
 		if(cmd.equals(ButtonCmd.LAND.name())) drone.getCommandManager().landing();
 		else if(cmd.equals(ButtonCmd.TAKE_OFF.name())) drone.getCommandManager().takeOff();
-		else if(cmd.equals(ButtonCmd.SPEED_DOWN.name())) drone.setSpeed(speed -= gui.getSpeedDecr());
-		else if(cmd.equals(ButtonCmd.SPEED_UP.name())) drone.setSpeed(speed += gui.getSpeedIncr());
+		else if(cmd.equals(ButtonCmd.SPEED_SET.name())) drone.setSpeed(gui.getSpeedVal());
 		else if(cmd.equals(ButtonCmd.EMERGENCY.name())) drone.getCommandManager().emergency();
 		else if(cmd.equals(ButtonCmd.TRIM.name())) drone.getCommandManager().flatTrim();
+		else if(cmd.equals(ButtonCmd.ANIMATION_SET.name())) drone.getCommandManager().setLedsAnimation(gui.getAnimationSelected(), 5, 5);
+		else if(cmd.equals(ButtonCmd.HOVER.name())) drone.getCommandManager().hover();
+		else if(cmd.equals(ButtonCmd.FREEZE.name())) drone.getCommandManager().freeze();
 		else System.err.println("unknown button command");
 		
-		
+//		drone.getCommandManager().hover();
+//		drone.getCommandManager().freeze();
+//		drone.getCommandManager().setLedsAnimation(, freq, duration)
 	}
 }

@@ -1,28 +1,23 @@
 package dtu.cdio.tutorial.gui;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.border.LineBorder;
-import javax.swing.JPanel;
-import javax.swing.AbstractListModel;
-import javax.swing.JScrollBar;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.JComboBox;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import de.yadrone.base.command.LEDAnimation;
 
 public class DroneVariablesGUI extends JFrame implements Runnable{
 
@@ -94,15 +89,14 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private JLabel stateVideoThreadOn;
 	private JLabel stateVisionDefined;
 	private JLabel stateVisionEnabled;
-	private JButton speedUp;
+	private JButton speedSet;
 	private JLabel lblSpeedUp;
-	private JTextField speedIncr;
-	private JButton speedDown;
-	private JTextField speedDecr;
+	private JTextField speedVal;
 	private JButton land;
 	private JButton takeOff;
 	private JButton btnEmergency;
 	private JButton trim;
+	private JButton btnSetAnimation;
 	private JLabel lblGyro;
 	private JTextField gyroXVal;
 	private JTextField gyroXOffset;
@@ -117,12 +111,17 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private JTextField gyroZOffset;
 	private DefaultListModel<String> listenerData;
 	private JFrame videoFrame;
-	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM};
+	private JComboBox<LEDAnimation> animationOptions;
+	public enum ButtonCmd{SPEED_SET, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM, ANIMATION_SET, FREEZE, HOVER};
 	
 	private ArrayList<JLabel> alarmStates = new ArrayList<JLabel>();
 	private Color alarmOnColor = Color.red;
 	private Color alarmOffColor = Color.green;
 	private Color alarmOnBlinkColor = Color.orange;
+	private JLabel lblLedAnimation;
+	private JLabel lblSpeed_1;
+	private JButton btnHover;
+	private JButton btnFreeze;
 	
 	public DroneVariablesGUI(){
 		videoFrame = new JFrame();
@@ -399,7 +398,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		stateMagnetoCalibrationNeeded = new JLabel("magneto calibration needed");
 		stateMagnetoCalibrationNeeded.setOpaque(true);
 		stateMagnetoCalibrationNeeded.setBackground(alarmOnColor);
-		stateMagnetoCalibrationNeeded.setBounds(570, 381, 173, 16);
+		stateMagnetoCalibrationNeeded.setBounds(560, 381, 183, 16);
 		getContentPane().add(stateMagnetoCalibrationNeeded);
 		
 		stateMotorsDown = new JLabel("motors down");
@@ -528,32 +527,20 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		stateUserFeedbackOn.setBounds(12, 607, 107, 16);
 		getContentPane().add(stateUserFeedbackOn);
 				
-		speedUp = new JButton("<html>&#9650</html>");
-		speedUp.setBounds(774, 35, 44, 35);
-		getContentPane().add(speedUp);
-		speedUp.setActionCommand(ButtonCmd.SPEED_UP.name());
+		speedSet = new JButton("Set");
+		speedSet.setBounds(750, 191, 56, 25);
+		getContentPane().add(speedSet);
+		speedSet.setActionCommand(ButtonCmd.SPEED_SET.name());
 		
-		lblSpeedUp = new JLabel("speed");
-		lblSpeedUp.setBounds(774, 13, 44, 16);
+		lblSpeedUp = new JLabel("% (1-100)");
+		lblSpeedUp.setBounds(682, 191, 61, 25);
 		getContentPane().add(lblSpeedUp);
 		
-		speedIncr = new JTextField();
-		speedIncr.setText("10");
-		speedIncr.setBounds(717, 41, 44, 22);
-		getContentPane().add(speedIncr);
-		speedIncr.setColumns(10);
-		
-		speedDown = new JButton("<html>&#9660</html>");
-		speedDown.setBounds(774, 83, 44, 35);
-		getContentPane().add(speedDown);
-		speedDown.setActionCommand(ButtonCmd.SPEED_DOWN.name());
-		
-		
-		speedDecr = new JTextField();
-		speedDecr.setText("10");
-		speedDecr.setColumns(10);
-		speedDecr.setBounds(717, 89, 44, 22);
-		getContentPane().add(speedDecr);
+		speedVal = new JTextField();
+		speedVal.setText("25");
+		speedVal.setBounds(501, 193, 169, 22);
+		getContentPane().add(speedVal);
+		speedVal.setColumns(10);
 		
 		land = new JButton("Land");
 		land.setBounds(603, 35, 96, 35);
@@ -640,6 +627,33 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		getContentPane().add(list);
 		listenerData = new DefaultListModel<String>();
 		list.setModel(listenerData);
+		
+		animationOptions = new JComboBox<LEDAnimation>();
+		animationOptions.setBounds(501, 146, 242, 22);
+		getContentPane().add(animationOptions);
+		
+		btnSetAnimation = new JButton("Set");
+		btnSetAnimation.setActionCommand(ButtonCmd.ANIMATION_SET.name());
+		btnSetAnimation.setBounds(750, 145, 56, 25);
+		getContentPane().add(btnSetAnimation);
+		
+		lblLedAnimation = new JLabel("led animation");
+		lblLedAnimation.setBounds(501, 131, 96, 16);
+		getContentPane().add(lblLedAnimation);
+		
+		lblSpeed_1 = new JLabel("speed");
+		lblSpeed_1.setBounds(501, 178, 56, 16);
+		getContentPane().add(lblSpeed_1);
+		
+		btnHover = new JButton("Hover");
+		btnHover.setBounds(711, 35, 96, 35);
+		btnHover.setActionCommand(ButtonCmd.HOVER.name());
+		getContentPane().add(btnHover);
+		
+		btnFreeze = new JButton("Freeze");
+		btnFreeze.setBounds(711, 83, 96, 35);
+		btnFreeze.setActionCommand(ButtonCmd.FREEZE.name());
+		getContentPane().add(btnFreeze);
 		
 		addAlarmStates();
 		setVisible(true);
@@ -872,11 +886,24 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	public void addButtonListener(ActionListener listener){
 		this.land.addActionListener(listener);
 		this.takeOff.addActionListener(listener);
-		this.speedDown.addActionListener(listener);
-		this.speedUp.addActionListener(listener);
+		this.speedSet.addActionListener(listener);
 		this.btnEmergency.addActionListener(listener);
 		this.trim.addActionListener(listener);
+		this.btnSetAnimation.addActionListener(listener);
+		this.btnFreeze.addActionListener(listener);
+		this.btnHover.addActionListener(listener);
 		
+	}
+	
+	public void setAnimationOptions(LEDAnimation[] options){
+		for(LEDAnimation l : options)this.animationOptions.addItem(l);
+	}
+	
+	public LEDAnimation getAnimationSelected(){
+		if(this.animationOptions.getSelectedItem() instanceof LEDAnimation){
+			return (LEDAnimation) this.animationOptions.getSelectedItem();
+		}
+		return LEDAnimation.BLANK;
 	}
 	
 	public void setImage(BufferedImage img){
@@ -904,17 +931,9 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		listenerData.removeElement(name);
 	}
 	
-	public int getSpeedIncr(){
+	public int getSpeedVal(){
 		try{
-		return Math.abs(Integer.valueOf(this.speedIncr.getText()));
-		}catch(Exception e){
-			return 1;
-		}
-	}
-	
-	public int getSpeedDecr(){
-		try{
-			return Math.abs(Integer.valueOf(this.speedDecr.getText()));
+		return Math.abs(Integer.valueOf(this.speedVal.getText()));
 		}catch(Exception e){
 			return 1;
 		}
