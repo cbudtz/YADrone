@@ -19,6 +19,7 @@ import dtu.cdio.tutorial.listeners.GyroListenerImpl;
 import dtu.cdio.tutorial.listeners.PressureListenerImpl;
 import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
 import dtu.cdio.tutorial.listeners.StateListenerImpl;
+import dtu.cdio.tutorial.listeners.VideoListenerImpl;
 
 public class TutorialMain implements ActionListener
 {
@@ -60,6 +61,7 @@ public class TutorialMain implements ActionListener
 			drone.getNavDataManager().addStateListener(stateListener);
 			
 			drone.getNavDataManager().addPressureListener(new PressureListenerImpl(gui));
+			drone.getVideoManager().addImageListener(new VideoListenerImpl(gui, true));
 			gui.addButtonListener(this);
 			//			drone.getNavDataManager().addAcceleroListener(new AcceleroListener() {
 			//

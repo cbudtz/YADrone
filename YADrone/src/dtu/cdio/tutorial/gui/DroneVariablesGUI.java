@@ -10,6 +10,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -112,10 +113,15 @@ public class DroneVariablesGUI extends JFrame{
 	private JTextField gyroZVal;
 	private JTextField gyroZOffset;
 	private DefaultListModel<String> listenerData;
-	
+	private JFrame videoFrame;
 	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM};
 	
 	public DroneVariablesGUI(){
+		videoFrame = new JFrame();
+		videoFrame.setSize(640, 480);
+		videoFrame.setDefaultCloseOperation(HIDE_ON_CLOSE);
+		videoFrame.setTitle("Video feed");
+		
 		setSize(848, 716);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle(title);
@@ -847,6 +853,22 @@ public class DroneVariablesGUI extends JFrame{
 		this.btnEmergency.addActionListener(listener);
 		this.trim.addActionListener(listener);
 		
+	}
+	
+	public void setImage(BufferedImage img){
+		videoFrame.getContentPane().getGraphics().drawImage(img, 0, 0, null);
+	}
+	
+	public void setVideoFrameSize(int width, int height){
+		videoFrame.setSize(width, height);
+	}
+	
+	public void showVideoFeed(){
+		videoFrame.setVisible(true);
+	}
+	
+	public void hideVideoFeed(){
+		videoFrame.setVisible(false);
 	}
 	
 	public synchronized void addListenerName(String name){
