@@ -926,7 +926,6 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 			public void actionPerformed(ActionEvent arg0) {
 
 				for(JLabel l : alarmStates){
-					System.out.println("background color: " + l.getBackground());
 					if(l.getBackground().equals(alarmOnColor))
 						l.setBackground(alarmOnBlinkColor);
 					else if(l.getBackground().equals(alarmOnBlinkColor))
