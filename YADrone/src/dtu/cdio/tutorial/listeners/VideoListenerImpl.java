@@ -2,10 +2,15 @@ package dtu.cdio.tutorial.listeners;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.ArrayList;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import de.yadrone.base.navdata.HDVideoStreamData;
 import de.yadrone.base.navdata.VideoListener;
@@ -41,7 +46,13 @@ public class VideoListenerImpl implements ImageListener {
 	}
 	
 	private synchronized void processImage(Mat rawImg){
-		
+		ArrayList<MatOfPoint> lines = new ArrayList<MatOfPoint>();
+		MatOfPoint line1 = new MatOfPoint(new Point(rawImg.cols()/2 -20, rawImg.rows()/2), new Point(rawImg.cols()/2+20, rawImg.rows()/2));
+		MatOfPoint line2 = new MatOfPoint(new Point(rawImg.cols()/2, rawImg.rows()/2-20), new Point(rawImg.cols()/2, rawImg.rows()/2+20));
+		lines.add(line2);
+		lines.add(line1);
+		Imgproc.drawContours(rawImg, lines, 1, new Scalar(0,255,0), 5);
+		if(!showRawImg) gui.setImage(Mat2BufferedImage(rawImg));
 	}
 	
 	private synchronized Mat BufferedImage2Mat(BufferedImage image){

@@ -39,6 +39,7 @@ public class TutorialMain implements ActionListener
 		try
 		{
 			gui = new DroneVariablesGUI();
+			new Thread(gui).start();
 			// Tutorial Section 1
 			drone = new ARDrone();
 			drone.start();
@@ -61,7 +62,7 @@ public class TutorialMain implements ActionListener
 			drone.getNavDataManager().addStateListener(stateListener);
 			
 			drone.getNavDataManager().addPressureListener(new PressureListenerImpl(gui));
-			drone.getVideoManager().addImageListener(new VideoListenerImpl(gui, true));
+			drone.getVideoManager().addImageListener(new VideoListenerImpl(gui, false));
 			gui.addButtonListener(this);
 			//			drone.getNavDataManager().addAcceleroListener(new AcceleroListener() {
 			//

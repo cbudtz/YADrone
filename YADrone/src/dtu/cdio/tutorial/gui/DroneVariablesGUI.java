@@ -4,13 +4,16 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -21,7 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.AbstractListModel;
 import javax.swing.JScrollBar;
 
-public class DroneVariablesGUI extends JFrame{
+public class DroneVariablesGUI extends JFrame implements Runnable{
 
 	/**
 	 * 
@@ -115,6 +118,11 @@ public class DroneVariablesGUI extends JFrame{
 	private DefaultListModel<String> listenerData;
 	private JFrame videoFrame;
 	public enum ButtonCmd{SPEED_UP, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM};
+	
+	private ArrayList<JLabel> alarmStates = new ArrayList<JLabel>();
+	private Color alarmOnColor = Color.red;
+	private Color alarmOffColor = Color.green;
+	private Color alarmOnBlinkColor = Color.orange;
 	
 	public DroneVariablesGUI(){
 		videoFrame = new JFrame();
@@ -294,229 +302,229 @@ public class DroneVariablesGUI extends JFrame{
 		
 		stateAcquisitionThreadOn = new JLabel("acquisition thread on");
 		stateAcquisitionThreadOn.setOpaque(true);
-		stateAcquisitionThreadOn.setBackground(Color.RED);
+		stateAcquisitionThreadOn.setBackground(alarmOnColor);
 		stateAcquisitionThreadOn.setBounds(264, 607, 141, 16);
 		getContentPane().add(stateAcquisitionThreadOn);
 		
 		stateADCWatchdogDelayed = new JLabel("ADC watchdog delayed");
 		stateADCWatchdogDelayed.setOpaque(true);
-		stateADCWatchdogDelayed.setBackground(Color.RED);
+		stateADCWatchdogDelayed.setBackground(alarmOnColor);
 		stateADCWatchdogDelayed.setBounds(417, 381, 131, 16);
 		getContentPane().add(stateADCWatchdogDelayed);
 		
 		stateAltitudeControlActive = new JLabel("altitude control active");
 		stateAltitudeControlActive.setOpaque(true);
-		stateAltitudeControlActive.setBackground(Color.RED);
+		stateAltitudeControlActive.setBackground(alarmOnColor);
 		stateAltitudeControlActive.setBounds(130, 381, 122, 16);
 		getContentPane().add(stateAltitudeControlActive);
 		
 		stateAngelsOutOfRange = new JLabel("angles out of range");
 		stateAngelsOutOfRange.setOpaque(true);
-		stateAngelsOutOfRange.setBackground(Color.RED);
+		stateAngelsOutOfRange.setBackground(alarmOnColor);
 		stateAngelsOutOfRange.setBounds(560, 436, 183, 16);
 		getContentPane().add(stateAngelsOutOfRange);
 		
 		stateATCodedThreadOn = new JLabel("AT coded thread on");
 		stateATCodedThreadOn.setOpaque(true);
-		stateATCodedThreadOn.setBackground(Color.RED);
+		stateATCodedThreadOn.setBackground(alarmOnColor);
 		stateATCodedThreadOn.setBounds(130, 607, 122, 16);
 		getContentPane().add(stateATCodedThreadOn);
 		
 		stateBatteryTooHigh = new JLabel("battery too high");
 		stateBatteryTooHigh.setOpaque(true);
-		stateBatteryTooHigh.setBackground(Color.RED);
+		stateBatteryTooHigh.setBackground(alarmOnColor);
 		stateBatteryTooHigh.setBounds(130, 436, 122, 16);
 		getContentPane().add(stateBatteryTooHigh);
 		
 		stateBatteryTooLow = new JLabel("battery too low");
 		stateBatteryTooLow.setOpaque(true);
-		stateBatteryTooLow.setBackground(Color.RED);
+		stateBatteryTooLow.setBackground(alarmOnColor);
 		stateBatteryTooLow.setBounds(264, 436, 141, 16);
 		getContentPane().add(stateBatteryTooLow);
 		
 		stateCameraReady = new JLabel("camera ready");
 		stateCameraReady.setOpaque(true);
-		stateCameraReady.setBackground(Color.RED);
+		stateCameraReady.setBackground(alarmOnColor);
 		stateCameraReady.setBounds(130, 520, 122, 16);
 		getContentPane().add(stateCameraReady);
 		
 		stateCommunicationLost = new JLabel("communication lost");
 		stateCommunicationLost.setOpaque(true);
-		stateCommunicationLost.setBackground(Color.RED);
+		stateCommunicationLost.setBackground(alarmOnColor);
 		stateCommunicationLost.setBounds(130, 465, 122, 16);
 		getContentPane().add(stateCommunicationLost);
 		
 		stateCommunicationProblemOccured = new JLabel("comm problem occured");
 		stateCommunicationProblemOccured.setOpaque(true);
-		stateCommunicationProblemOccured.setBackground(Color.RED);
+		stateCommunicationProblemOccured.setBackground(alarmOnColor);
 		stateCommunicationProblemOccured.setBounds(264, 465, 141, 16);
 		getContentPane().add(stateCommunicationProblemOccured);
 		
 		stateControlReceived = new JLabel("control received");
 		stateControlReceived.setOpaque(true);
-		stateControlReceived.setBackground(Color.RED);
+		stateControlReceived.setBackground(alarmOnColor);
 		stateControlReceived.setBounds(12, 381, 107, 16);
 		getContentPane().add(stateControlReceived);
 		
 		stateControlWatchDogDelayed = new JLabel("control watchdog delayed");
 		stateControlWatchDogDelayed.setOpaque(true);
-		stateControlWatchDogDelayed.setBackground(Color.RED);
+		stateControlWatchDogDelayed.setBackground(alarmOnColor);
 		stateControlWatchDogDelayed.setBounds(560, 520, 183, 16);
 		getContentPane().add(stateControlWatchDogDelayed);
 		
 		stateCutoutSystemDetected = new JLabel("cutout system detected");
 		stateCutoutSystemDetected.setOpaque(true);
-		stateCutoutSystemDetected.setBackground(Color.RED);
+		stateCutoutSystemDetected.setBackground(alarmOnColor);
 		stateCutoutSystemDetected.setBounds(264, 381, 141, 16);
 		getContentPane().add(stateCutoutSystemDetected);
 		
 		stateEmergency = new JLabel("emergency");
 		stateEmergency.setOpaque(true);
-		stateEmergency.setBackground(Color.RED);
+		stateEmergency.setBackground(alarmOnColor);
 		stateEmergency.setBounds(264, 410, 141, 16);
 		getContentPane().add(stateEmergency);
 		
 		stateFlying = new JLabel("flying");
 		stateFlying.setOpaque(true);
-		stateFlying.setBackground(Color.RED);
+		stateFlying.setBackground(alarmOnColor);
 		stateFlying.setBounds(12, 407, 107, 16);
 		getContentPane().add(stateFlying);
 		
 		stateGyrometersDown = new JLabel("gyros down");
 		stateGyrometersDown.setOpaque(true);
-		stateGyrometersDown.setBackground(Color.RED);
+		stateGyrometersDown.setBackground(alarmOnColor);
 		stateGyrometersDown.setBounds(417, 465, 131, 16);
 		getContentPane().add(stateGyrometersDown);
 		
 		stateMagnetoCalibrationNeeded = new JLabel("magneto calibration needed");
 		stateMagnetoCalibrationNeeded.setOpaque(true);
-		stateMagnetoCalibrationNeeded.setBackground(Color.RED);
+		stateMagnetoCalibrationNeeded.setBackground(alarmOnColor);
 		stateMagnetoCalibrationNeeded.setBounds(570, 381, 173, 16);
 		getContentPane().add(stateMagnetoCalibrationNeeded);
 		
 		stateMotorsDown = new JLabel("motors down");
 		stateMotorsDown.setOpaque(true);
-		stateMotorsDown.setBackground(Color.RED);
+		stateMotorsDown.setBackground(alarmOnColor);
 		stateMotorsDown.setBounds(12, 465, 107, 16);
 		getContentPane().add(stateMotorsDown);
 		
 		stateNavDataBootstrap = new JLabel("navdata bootstrap");
 		stateNavDataBootstrap.setOpaque(true);
-		stateNavDataBootstrap.setBackground(Color.RED);
+		stateNavDataBootstrap.setBackground(alarmOnColor);
 		stateNavDataBootstrap.setBounds(130, 578, 122, 16);
 		getContentPane().add(stateNavDataBootstrap);
 		
 		stateNavdataDemoOnly = new JLabel("navdata demo only");
 		stateNavdataDemoOnly.setOpaque(true);
-		stateNavdataDemoOnly.setBackground(Color.RED);
+		stateNavdataDemoOnly.setBackground(alarmOnColor);
 		stateNavdataDemoOnly.setBounds(264, 578, 141, 16);
 		getContentPane().add(stateNavdataDemoOnly);
 		
 		stateNavdataThreadOn = new JLabel("navdata thread on");
 		stateNavdataThreadOn.setOpaque(true);
-		stateNavdataThreadOn.setBackground(Color.RED);
+		stateNavdataThreadOn.setBackground(alarmOnColor);
 		stateNavdataThreadOn.setBounds(12, 578, 107, 16);
 		getContentPane().add(stateNavdataThreadOn);
 		
 		stateNotEnoughPower = new JLabel("not enough power");
 		stateNotEnoughPower.setOpaque(true);
-		stateNotEnoughPower.setBackground(Color.RED);
+		stateNotEnoughPower.setBackground(alarmOnColor);
 		stateNotEnoughPower.setBounds(12, 436, 107, 16);
 		getContentPane().add(stateNotEnoughPower);
 		
 		statePICVersionNumberOK = new JLabel("PIC version ok");
 		statePICVersionNumberOK.setOpaque(true);
-		statePICVersionNumberOK.setBackground(Color.RED);
+		statePICVersionNumberOK.setBackground(alarmOnColor);
 		statePICVersionNumberOK.setBounds(264, 520, 141, 16);
 		getContentPane().add(statePICVersionNumberOK);
 		
 		stateSoftwareFaultDetected = new JLabel("software fault");
 		stateSoftwareFaultDetected.setOpaque(true);
-		stateSoftwareFaultDetected.setBackground(Color.RED);
+		stateSoftwareFaultDetected.setBackground(alarmOnColor);
 		stateSoftwareFaultDetected.setBounds(560, 465, 183, 16);
 		getContentPane().add(stateSoftwareFaultDetected);
 		
 		stateTimerElapsed = new JLabel("timer elapsed");
 		stateTimerElapsed.setOpaque(true);
-		stateTimerElapsed.setBackground(Color.RED);
+		stateTimerElapsed.setBackground(alarmOnColor);
 		stateTimerElapsed.setBounds(560, 549, 183, 16);
 		getContentPane().add(stateTimerElapsed);
 		
 		stateTooMuchWind = new JLabel("too much wind");
 		stateTooMuchWind.setOpaque(true);
-		stateTooMuchWind.setBackground(Color.RED);
+		stateTooMuchWind.setBackground(alarmOnColor);
 		stateTooMuchWind.setBounds(417, 436, 131, 16);
 		getContentPane().add(stateTooMuchWind);
 		
 		stateTravellingMask = new JLabel("travelling mask");
 		stateTravellingMask.setOpaque(true);
-		stateTravellingMask.setBackground(Color.RED);
+		stateTravellingMask.setBackground(alarmOnColor);
 		stateTravellingMask.setBounds(417, 520, 131, 16);
 		getContentPane().add(stateTravellingMask);
 		
 		stateTrimReceived = new JLabel("trim received");
 		stateTrimReceived.setOpaque(true);
-		stateTrimReceived.setBackground(Color.RED);
+		stateTrimReceived.setBackground(alarmOnColor);
 		stateTrimReceived.setBounds(12, 549, 107, 16);
 		getContentPane().add(stateTrimReceived);
 		
 		stateTrimRunning = new JLabel("trim running");
 		stateTrimRunning.setOpaque(true);
-		stateTrimRunning.setBackground(Color.RED);
+		stateTrimRunning.setBackground(alarmOnColor);
 		stateTrimRunning.setBounds(130, 549, 122, 16);
 		getContentPane().add(stateTrimRunning);
 		
 		stateTrimSucceeded = new JLabel("trim succeeded");
 		stateTrimSucceeded.setOpaque(true);
-		stateTrimSucceeded.setBackground(Color.RED);
+		stateTrimSucceeded.setBackground(alarmOnColor);
 		stateTrimSucceeded.setBounds(264, 549, 141, 16);
 		getContentPane().add(stateTrimSucceeded);
 		
 		stateUltrasonicSensorDeaf = new JLabel("ultrasonic sensor deaf");
 		stateUltrasonicSensorDeaf.setOpaque(true);
-		stateUltrasonicSensorDeaf.setBackground(Color.RED);
+		stateUltrasonicSensorDeaf.setBackground(alarmOnColor);
 		stateUltrasonicSensorDeaf.setBounds(560, 494, 183, 16);
 		getContentPane().add(stateUltrasonicSensorDeaf);
 		
 		stateUsbKeyReady = new JLabel("usb key ready");
 		stateUsbKeyReady.setOpaque(true);
-		stateUsbKeyReady.setBackground(Color.RED);
+		stateUsbKeyReady.setBackground(alarmOnColor);
 		stateUsbKeyReady.setBounds(12, 520, 107, 16);
 		getContentPane().add(stateUsbKeyReady);
 
 		stateVideoEnabled = new JLabel("video enabled");
 		stateVideoEnabled.setOpaque(true);
-		stateVideoEnabled.setBackground(Color.RED);
+		stateVideoEnabled.setBackground(alarmOnColor);
 		stateVideoEnabled.setBounds(264, 494, 141, 16);
 		getContentPane().add(stateVideoEnabled);
 		
 		stateVideoThreadOn = new JLabel("video thread on");
 		stateVideoThreadOn.setOpaque(true);
-		stateVideoThreadOn.setBackground(Color.RED);
+		stateVideoThreadOn.setBackground(alarmOnColor);
 		stateVideoThreadOn.setBounds(417, 494, 131, 16);
 		getContentPane().add(stateVideoThreadOn);
 		
 		stateVisionDefined = new JLabel("vision defined");
 		stateVisionDefined.setOpaque(true);
-		stateVisionDefined.setBackground(Color.RED);
+		stateVisionDefined.setBackground(alarmOnColor);
 		stateVisionDefined.setBounds(12, 494, 107, 16);
 		getContentPane().add(stateVisionDefined);
 		
 		stateVisionEnabled = new JLabel("vision enabled");
 		stateVisionEnabled.setOpaque(true);
-		stateVisionEnabled.setBackground(Color.RED);
+		stateVisionEnabled.setBackground(alarmOnColor);
 		stateVisionEnabled.setBounds(130, 494, 122, 16);
 		getContentPane().add(stateVisionEnabled);
 		
 		stateUserEmergencyLanding = new JLabel("emergency landing");
 		stateUserEmergencyLanding.setOpaque(true);
-		stateUserEmergencyLanding.setBackground(Color.RED);
+		stateUserEmergencyLanding.setBackground(alarmOnColor);
 		stateUserEmergencyLanding.setBounds(130, 410, 122, 16);
 		getContentPane().add(stateUserEmergencyLanding);
 		
 		stateUserFeedbackOn = new JLabel("user feedback on");
 		stateUserFeedbackOn.setOpaque(true);
-		stateUserFeedbackOn.setBackground(Color.RED);
+		stateUserFeedbackOn.setBackground(alarmOnColor);
 		stateUserFeedbackOn.setBounds(12, 607, 107, 16);
 		getContentPane().add(stateUserFeedbackOn);
 				
@@ -632,9 +640,23 @@ public class DroneVariablesGUI extends JFrame{
 		getContentPane().add(list);
 		listenerData = new DefaultListModel<String>();
 		list.setModel(listenerData);
+		
+		addAlarmStates();
 		setVisible(true);
 	}
 
+	public void addAlarmStates(){
+		alarmStates.add(stateEmergency);
+		alarmStates.add(stateCommunicationLost);
+		alarmStates.add(stateCommunicationProblemOccured);
+		alarmStates.add(stateBatteryTooHigh);
+		alarmStates.add(stateBatteryTooLow);
+		alarmStates.add(stateNotEnoughPower);
+		alarmStates.add(stateGyrometersDown);
+		alarmStates.add(stateMotorsDown);
+		alarmStates.add(stateSoftwareFaultDetected);
+		alarmStates.add(stateUserEmergencyLanding);
+	}
 	public void setSpeed(int speed) {this.speed.setText(String.valueOf(speed));	}
 
 	public void setAltitude(int altitude) {this.altitude.setText(String.valueOf(altitude));}
@@ -670,155 +692,155 @@ public class DroneVariablesGUI extends JFrame{
 	public void setPressure(String val) {this.pressure.setText(val);}
 
 	public void setStateAcquisitionThreadOn(boolean b){
-		this.stateAcquisitionThreadOn.setBackground(b ? Color.green : Color.red);
+		this.stateAcquisitionThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateADCWatchdogDelayed(boolean b){
-		this.stateADCWatchdogDelayed.setBackground(b ? Color.green : Color.red);
+		this.stateADCWatchdogDelayed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateAltitudeControlActive(boolean b){
-		this.stateAltitudeControlActive.setBackground(b ? Color.green : Color.red);
+		this.stateAltitudeControlActive.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateAngelsOutOfRange(boolean b){
-		this.stateAngelsOutOfRange.setBackground(b ? Color.green : Color.red);
+		this.stateAngelsOutOfRange.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateATCodedThreadOn(boolean b){
-		this.stateATCodedThreadOn.setBackground(b ? Color.green : Color.red);
+		this.stateATCodedThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateBatteryTooHigh(boolean b){
-		this.stateBatteryTooHigh.setBackground(b ? Color.green : Color.red);
+		this.stateBatteryTooHigh.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateBatteryTooLow(boolean b){
-		this.stateBatteryTooLow.setBackground(b ? Color.green : Color.red);
+		this.stateBatteryTooLow.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateCameraReady(boolean b){
-		this.stateCameraReady.setBackground(b ? Color.green : Color.red);
+		this.stateCameraReady.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateCommunicationLost(boolean b){
-		this.stateCommunicationLost.setBackground(b ? Color.green : Color.red);
+		this.stateCommunicationLost.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateCommunicationProblemOccured(boolean b){
-		this.stateCommunicationProblemOccured.setBackground(b ? Color.green : Color.red);
+		this.stateCommunicationProblemOccured.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateControlReceived(boolean b){
-		this.stateControlReceived.setBackground(b ? Color.green : Color.red);
+		this.stateControlReceived.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateControlWatchDogDelayed(boolean b){
-		this.stateControlWatchDogDelayed.setBackground(b ? Color.green : Color.red);
+		this.stateControlWatchDogDelayed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateCutoutSystemDetected(boolean b){
-		this.stateCutoutSystemDetected.setBackground(b ? Color.green : Color.red);
+		this.stateCutoutSystemDetected.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateEmergency(boolean b){
-		this.stateEmergency.setBackground(b ? Color.green : Color.red);
+		this.stateEmergency.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateFlying(boolean b){
-		this.stateFlying.setBackground(b ? Color.green : Color.red);
+		this.stateFlying.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateGyrometersDown(boolean b){
-		this.stateGyrometersDown.setBackground(b ? Color.green : Color.red);
+		this.stateGyrometersDown.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateMagnetoCalibrationNeeded(boolean b){
-		this.stateMagnetoCalibrationNeeded.setBackground(b ? Color.green : Color.red);
+		this.stateMagnetoCalibrationNeeded.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateMotorsDown(boolean b){
-		this.stateMotorsDown.setBackground(b ? Color.green : Color.red);
+		this.stateMotorsDown.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateNavDataBootstrap(boolean b){
-		this.stateNavDataBootstrap.setBackground(b ? Color.green : Color.red);
+		this.stateNavDataBootstrap.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateNavdataDemoOnly(boolean b){
-		this.stateNavdataDemoOnly.setBackground(b ? Color.green : Color.red);
+		this.stateNavdataDemoOnly.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateNavdataThreadOn(boolean b){
-		this.stateNavdataThreadOn.setBackground(b ? Color.green : Color.red);
+		this.stateNavdataThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateNotEnoughPower(boolean b){
-		this.stateNotEnoughPower.setBackground(b ? Color.green : Color.red);
+		this.stateNotEnoughPower.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStatePICVersionNumberOK(boolean b){
-		this.statePICVersionNumberOK.setBackground(b ? Color.green : Color.red);
+		this.statePICVersionNumberOK.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateSoftwareFaultDetected(boolean b){
-		this.stateSoftwareFaultDetected.setBackground(b ? Color.green : Color.red);
+		this.stateSoftwareFaultDetected.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTimerElapsed(boolean b){
-		this.stateTimerElapsed.setBackground(b ? Color.green : Color.red);
+		this.stateTimerElapsed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTooMuchWind(boolean b){
-		this.stateTooMuchWind.setBackground(b ? Color.green : Color.red);
+		this.stateTooMuchWind.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTravellingMask(boolean b){
-		this.stateTravellingMask.setBackground(b ? Color.green : Color.red);
+		this.stateTravellingMask.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTrimReceived(boolean b){
-		this.stateTrimReceived.setBackground(b ? Color.green : Color.red);
+		this.stateTrimReceived.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTrimRunning(boolean b){
-		this.stateTrimRunning.setBackground(b ? Color.green : Color.red);
+		this.stateTrimRunning.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateTrimSucceeded(boolean b){
-		this.stateTrimSucceeded.setBackground(b ? Color.green : Color.red);
+		this.stateTrimSucceeded.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateUltrasonicSensorDeaf(boolean b){
-		this.stateUltrasonicSensorDeaf.setBackground(b ? Color.green : Color.red);
+		this.stateUltrasonicSensorDeaf.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateUsbKeyReady(boolean b){
-		this.stateUsbKeyReady.setBackground(b ? Color.green : Color.red);
+		this.stateUsbKeyReady.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateUserEmergencyLanding(boolean b){
-		this.stateUserEmergencyLanding.setBackground(b ? Color.green : Color.red);
+		this.stateUserEmergencyLanding.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateUserFeedbackOn(boolean b){
-		this.stateUserFeedbackOn.setBackground(b ? Color.green : Color.red);
+		this.stateUserFeedbackOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateVideoEnabled(boolean b){
-		this.stateVideoEnabled.setBackground(b ? Color.green : Color.red);
+		this.stateVideoEnabled.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateVideoThreadOn(boolean b){
-		this.stateVideoThreadOn.setBackground(b ? Color.green : Color.red);
+		this.stateVideoThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateVisionDefined(boolean b){
-		this.stateVisionDefined.setBackground(b ? Color.green : Color.red);
+		this.stateVisionDefined.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
 	public void setStateVisionEnabled(boolean b){
-		this.stateVisionEnabled.setBackground(b ? Color.green : Color.red);
+		this.stateVisionEnabled.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 	
 	public void setGyroXVal(float val){
@@ -894,5 +916,23 @@ public class DroneVariablesGUI extends JFrame{
 		}catch(Exception e){
 			return 1;
 		}
+	}
+
+	@Override
+	public void run() {
+		new Timer(500, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				for(JLabel l : alarmStates){
+					System.out.println("background color: " + l.getBackground());
+					if(l.getBackground().equals(alarmOnColor))
+						l.setBackground(alarmOnBlinkColor);
+					else if(l.getBackground().equals(alarmOnBlinkColor))
+						l.setBackground(alarmOnColor);
+				}
+			}
+		}).start();
 	}
 }
