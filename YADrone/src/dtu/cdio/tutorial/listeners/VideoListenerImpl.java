@@ -19,7 +19,9 @@ public class VideoListenerImpl implements ImageListener {
 	private boolean showRawImg = true;
 	private boolean frameSizeSet = false;
 	public VideoListenerImpl(DroneVariablesGUI gui, boolean showRawImg) {
+		System.out.println("loading openCV native library...");
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.out.println("loading complete");
 		this.gui = gui;
 		this.showRawImg = showRawImg;
 		if(gui != null) {
