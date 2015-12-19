@@ -4,11 +4,17 @@ import de.yadrone.base.navdata.ControlState;
 import de.yadrone.base.navdata.DroneState;
 import de.yadrone.base.navdata.StateListener;
 import dtu.cdio.tutorial.TutorialMain;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * for gui. showing different states of drone. Fatal states are blinking in gui.
+ * 
+ */
 public class StateListenerImpl implements StateListener {
 
-	private DroneVariablesGUI gui;
+	private DebugGui gui;
 	private volatile boolean AcquisitionThreadOn = false;
 	private volatile boolean ADCWatchdogDelayed = true;
 	private volatile boolean AltitudeControlActive = false;
@@ -49,9 +55,8 @@ public class StateListenerImpl implements StateListener {
 	private volatile boolean VisionEnabled = false;
 	
 	public TutorialMain test;
-	public StateListenerImpl(DroneVariablesGUI gui, TutorialMain test){
+	public StateListenerImpl(DebugGui gui){
 		this.gui = gui;
-		this.test = test;
 		if(gui != null) gui.addListenerName("state listener");
 	}
 	@Override

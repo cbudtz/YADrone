@@ -17,8 +17,14 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import de.yadrone.base.command.LEDAnimation;
+import dtu.cdio.tutorial.programs.Program;
 
-public class DroneVariablesGUI extends JFrame implements Runnable{
+/**
+ * 
+ * @author Runi
+ * DummyGUI shows states and other valueable information about drone. Remember to add ButtonListener 
+ */
+public class DroneVariablesGUI extends JFrame implements Runnable, DebugGui{
 
 	/**
 	 * 
@@ -109,6 +115,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private DefaultListModel<String> listenerData;
 	private JFrame videoFrame;
 	private JComboBox<LEDAnimation> animationOptions;
+	private JComboBox<Program> programOptions;
 	public enum ButtonCmd{SPEED_SET, LAND, TAKE_OFF, EMERGENCY, AUTO_TRIM, MANUAL_TRIM, ANIMATION_SET, FREEZE, HOVER, RUN_PROGRAM};
 	
 	private ArrayList<JLabel> alarmStates = new ArrayList<JLabel>();
@@ -131,6 +138,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private JLabel lblDurations;
 	private JTextField animDuration;
 	private JButton btnRunProgram;
+	private JLabel lblRunProgram;
 	
 	public DroneVariablesGUI(){
 		videoFrame = new JFrame();
@@ -721,10 +729,18 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		getContentPane().add(animDuration);
 		animDuration.setColumns(10);
 		
-		btnRunProgram = new JButton("Run program");
-		btnRunProgram.setBounds(622, 617, 200, 50);
+		btnRunProgram = new JButton("Run");
+		btnRunProgram.setBounds(724, 636, 82, 22);
 		btnRunProgram.setActionCommand(ButtonCmd.RUN_PROGRAM.name());
 		getContentPane().add(btnRunProgram);
+		
+		programOptions = new JComboBox<>();
+		programOptions.setBounds(501, 636, 210, 22);
+		getContentPane().add(programOptions);
+		
+		lblRunProgram = new JLabel("run program");
+		lblRunProgram.setBounds(502, 619, 95, 14);
+		getContentPane().add(lblRunProgram);
 		
 		addAlarmStates();
 		setVisible(true);
@@ -744,216 +760,464 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		alarmStates.add(stateAngelsOutOfRange);
 		alarmStates.add(stateTooMuchWind);
 	}
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setSpeed(int)
+	 */
+	@Override
 	public void setSpeed(int speed) {this.speed.setText(String.valueOf(speed));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setAltitude(int)
+	 */
+	@Override
 	public void setAltitude(int altitude) {this.altitude.setText(String.valueOf(altitude));}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setPitchComp(float)
+	 */
+	@Override
 	public void setPitchComp(float pitchComp) {this.pitchComp.setText(String.valueOf(pitchComp));}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setRollComp(float)
+	 */
+	@Override
 	public void setRollComp(float rollComp) {this.rollComp.setText(String.valueOf(rollComp));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setPitchUpdated(float)
+	 */
+	@Override
 	public void setPitchUpdated(float pitchUpdated) {this.pitchUpdated.setText(String.valueOf(pitchUpdated));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setRollUpdated(float)
+	 */
+	@Override
 	public void setRollUpdated(float rollUpdated) {this.rollUpdated.setText(String.valueOf(rollUpdated));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setYawUpdated(float)
+	 */
+	@Override
 	public void setYawUpdated(float yawUpdated) {this.yawUpdated.setText(String.valueOf(yawUpdated));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setBattery(int)
+	 */
+	@Override
 	public void setBattery(int battery) {this.battery.setText(String.valueOf(battery));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setSpeedMaxDelta(int)
+	 */
+	@Override
 	public void setSpeedMaxDelta(int speedMaxDelta) {this.speedMaxDelta.setText(String.valueOf(speedMaxDelta));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setAltitudeMaxDelta(int)
+	 */
+	@Override
 	public void setAltitudeMaxDelta(int altitudeMaxDelta) {this.altitudeMaxDelta.setText(String.valueOf(altitudeMaxDelta));	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setPitchCompMaxDelta(float)
+	 */
+	@Override
 	public void setPitchCompMaxDelta(float pitchCompMaxDelta) {this.pitchCompMaxDelta.setText(String.valueOf(pitchCompMaxDelta)); }
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setRollCompMaxDelta(float)
+	 */
+	@Override
 	public void setRollCompMaxDelta(float rollCompMaxDelta) {this.rollCompMaxDelta.setText(String.valueOf(rollCompMaxDelta)); }
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setPitchUpdatedMaxDelta(float)
+	 */
+	@Override
 	public void setPitchUpdatedMaxDelta(float pitchUpdatedMaxDelta) {this.pitchUpdatedMaxDelta.setText(String.valueOf(pitchUpdatedMaxDelta)); }
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setRollUpdatedMaxDelta(float)
+	 */
+	@Override
 	public void setRollUpdatedMaxDelta(float rollUpdatedMaxDelta) {this.rollUpdatedMaxDelta.setText(String.valueOf(rollUpdatedMaxDelta)); }
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setYawUpdatedMaxDelta(float)
+	 */
+	@Override
 	public void setYawUpdatedMaxDelta(float yawUpdatedMaxDelta) {this.yawUpdatedMaxDelta.setText(String.valueOf(yawUpdatedMaxDelta)); }
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setCtrlState(java.lang.String)
+	 */
+	@Override
 	public void setCtrlState(String name) { this.ctrlState.setText(name);}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setPressure(java.lang.String)
+	 */
+	@Override
 	public void setPressure(String val) {this.pressure.setText(val);}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateAcquisitionThreadOn(boolean)
+	 */
+	@Override
 	public void setStateAcquisitionThreadOn(boolean b){
 		this.stateAcquisitionThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateADCWatchdogDelayed(boolean)
+	 */
+	@Override
 	public void setStateADCWatchdogDelayed(boolean b){
 		this.stateADCWatchdogDelayed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateAltitudeControlActive(boolean)
+	 */
+	@Override
 	public void setStateAltitudeControlActive(boolean b){
 		this.stateAltitudeControlActive.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateAngelsOutOfRange(boolean)
+	 */
+	@Override
 	public void setStateAngelsOutOfRange(boolean b){
 		this.stateAngelsOutOfRange.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateATCodedThreadOn(boolean)
+	 */
+	@Override
 	public void setStateATCodedThreadOn(boolean b){
 		this.stateATCodedThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateBatteryTooHigh(boolean)
+	 */
+	@Override
 	public void setStateBatteryTooHigh(boolean b){
 		this.stateBatteryTooHigh.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateBatteryTooLow(boolean)
+	 */
+	@Override
 	public void setStateBatteryTooLow(boolean b){
 		this.stateBatteryTooLow.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateCameraReady(boolean)
+	 */
+	@Override
 	public void setStateCameraReady(boolean b){
 		this.stateCameraReady.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateCommunicationLost(boolean)
+	 */
+	@Override
 	public void setStateCommunicationLost(boolean b){
 		this.stateCommunicationLost.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateCommunicationProblemOccured(boolean)
+	 */
+	@Override
 	public void setStateCommunicationProblemOccured(boolean b){
 		this.stateCommunicationProblemOccured.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateControlReceived(boolean)
+	 */
+	@Override
 	public void setStateControlReceived(boolean b){
 		this.stateControlReceived.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateControlWatchDogDelayed(boolean)
+	 */
+	@Override
 	public void setStateControlWatchDogDelayed(boolean b){
 		this.stateControlWatchDogDelayed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateCutoutSystemDetected(boolean)
+	 */
+	@Override
 	public void setStateCutoutSystemDetected(boolean b){
 		this.stateCutoutSystemDetected.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateEmergency(boolean)
+	 */
+	@Override
 	public void setStateEmergency(boolean b){
 		this.stateEmergency.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateFlying(boolean)
+	 */
+	@Override
 	public void setStateFlying(boolean b){
 		this.stateFlying.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateGyrometersDown(boolean)
+	 */
+	@Override
 	public void setStateGyrometersDown(boolean b){
 		this.stateGyrometersDown.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateMagnetoCalibrationNeeded(boolean)
+	 */
+	@Override
 	public void setStateMagnetoCalibrationNeeded(boolean b){
 		this.stateMagnetoCalibrationNeeded.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateMotorsDown(boolean)
+	 */
+	@Override
 	public void setStateMotorsDown(boolean b){
 		this.stateMotorsDown.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateNavDataBootstrap(boolean)
+	 */
+	@Override
 	public void setStateNavDataBootstrap(boolean b){
 		this.stateNavDataBootstrap.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateNavdataDemoOnly(boolean)
+	 */
+	@Override
 	public void setStateNavdataDemoOnly(boolean b){
 		this.stateNavdataDemoOnly.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateNavdataThreadOn(boolean)
+	 */
+	@Override
 	public void setStateNavdataThreadOn(boolean b){
 		this.stateNavdataThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateNotEnoughPower(boolean)
+	 */
+	@Override
 	public void setStateNotEnoughPower(boolean b){
 		this.stateNotEnoughPower.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStatePICVersionNumberOK(boolean)
+	 */
+	@Override
 	public void setStatePICVersionNumberOK(boolean b){
 		this.statePICVersionNumberOK.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateSoftwareFaultDetected(boolean)
+	 */
+	@Override
 	public void setStateSoftwareFaultDetected(boolean b){
 		this.stateSoftwareFaultDetected.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTimerElapsed(boolean)
+	 */
+	@Override
 	public void setStateTimerElapsed(boolean b){
 		this.stateTimerElapsed.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTooMuchWind(boolean)
+	 */
+	@Override
 	public void setStateTooMuchWind(boolean b){
 		this.stateTooMuchWind.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTravellingMask(boolean)
+	 */
+	@Override
 	public void setStateTravellingMask(boolean b){
 		this.stateTravellingMask.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTrimReceived(boolean)
+	 */
+	@Override
 	public void setStateTrimReceived(boolean b){
 		this.stateTrimReceived.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTrimRunning(boolean)
+	 */
+	@Override
 	public void setStateTrimRunning(boolean b){
 		this.stateTrimRunning.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateTrimSucceeded(boolean)
+	 */
+	@Override
 	public void setStateTrimSucceeded(boolean b){
 		this.stateTrimSucceeded.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateUltrasonicSensorDeaf(boolean)
+	 */
+	@Override
 	public void setStateUltrasonicSensorDeaf(boolean b){
 		this.stateUltrasonicSensorDeaf.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateUsbKeyReady(boolean)
+	 */
+	@Override
 	public void setStateUsbKeyReady(boolean b){
 		this.stateUsbKeyReady.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateUserEmergencyLanding(boolean)
+	 */
+	@Override
 	public void setStateUserEmergencyLanding(boolean b){
 		this.stateUserEmergencyLanding.setBackground(!b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateUserFeedbackOn(boolean)
+	 */
+	@Override
 	public void setStateUserFeedbackOn(boolean b){
 		this.stateUserFeedbackOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateVideoEnabled(boolean)
+	 */
+	@Override
 	public void setStateVideoEnabled(boolean b){
 		this.stateVideoEnabled.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateVideoThreadOn(boolean)
+	 */
+	@Override
 	public void setStateVideoThreadOn(boolean b){
 		this.stateVideoThreadOn.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateVisionDefined(boolean)
+	 */
+	@Override
 	public void setStateVisionDefined(boolean b){
 		this.stateVisionDefined.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setStateVisionEnabled(boolean)
+	 */
+	@Override
 	public void setStateVisionEnabled(boolean b){
 		this.stateVisionEnabled.setBackground(b ? alarmOffColor : alarmOnColor);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroXVal(float)
+	 */
+	@Override
 	public void setGyroXVal(float val){
 		this.gyroXVal.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroXOffset(float)
+	 */
+	@Override
 	public void setGyroXOffset(float val){
 		this.gyroXOffset.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroYVal(float)
+	 */
+	@Override
 	public void setGyroYVal(float val){
 		this.gyroYVal.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroYOffset(float)
+	 */
+	@Override
 	public void setGyroYOffset(float val){
 		this.gyroYOffset.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroZVal(float)
+	 */
+	@Override
 	public void setGyroZVal(float val){
 		this.gyroZVal.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setGyroZOffset(float)
+	 */
+	@Override
 	public void setGyroZOffset(float val){
 		this.gyroZOffset.setText(String.valueOf(val));
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#addButtonListener(java.awt.event.ActionListener)
+	 */
+	@Override
 	public void addButtonListener(ActionListener listener){
 		this.land.addActionListener(listener);
 		this.takeOff.addActionListener(listener);
@@ -967,6 +1231,30 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		this.btnRunProgram.addActionListener(listener);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#addProgram(dtu.cdio.tutorial.programs.Program)
+	 */
+	@Override
+	public void addProgram(Program p){
+		this.programOptions.addItem(p);
+	}
+	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getSelectedProgram()
+	 */
+	@Override
+	public Program getSelectedProgram(){
+		try{
+		return this.programOptions.getItemAt(this.programOptions.getSelectedIndex());
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getAnimationFrequency()
+	 */
+	@Override
 	public float getAnimationFrequency(){
 		try{
 			return Float.valueOf(this.animFrequency.getText());
@@ -975,6 +1263,10 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getAnimationDuration()
+	 */
+	@Override
 	public int getAnimationDuration(){
 		try{
 			return Integer.valueOf(this.animDuration.getText());
@@ -983,17 +1275,30 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setAnimationOptions(de.yadrone.base.command.LEDAnimation[])
+	 */
+	@Override
 	public void setAnimationOptions(LEDAnimation[] options){
 		for(LEDAnimation l : options)this.animationOptions.addItem(l);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getAnimationSelected()
+	 */
+	@Override
 	public LEDAnimation getAnimationSelected(){
-		if(this.animationOptions.getSelectedItem() instanceof LEDAnimation){
-			return (LEDAnimation) this.animationOptions.getSelectedItem();
+		try{
+		return this.animationOptions.getItemAt(this.animationOptions.getSelectedIndex());
+		}catch(Exception e){
+			return LEDAnimation.BLANK;
 		}
-		return LEDAnimation.BLANK;
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getRollTrim()
+	 */
+	@Override
 	public float getRollTrim(){
 		try{
 			return Float.valueOf(this.rollTrim.getText());
@@ -1002,6 +1307,10 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getPitchTrim()
+	 */
+	@Override
 	public float getPitchTrim(){
 		try{
 			return Float.valueOf(this.pitchTrim.getText());
@@ -1010,6 +1319,10 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getYawTrim()
+	 */
+	@Override
 	public float getYawTrim(){
 		try{
 			return Float.valueOf(this.yawTrim.getText());
@@ -1018,31 +1331,59 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setImage(java.awt.image.BufferedImage)
+	 */
+	@Override
 	public void setImage(BufferedImage img){
 		videoFrame.getContentPane().getGraphics().drawImage(img, 0, 0, null);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#setVideoFrameSize(int, int)
+	 */
+	@Override
 	public void setVideoFrameSize(int width, int height){
 		videoFrame.setSize(width, height);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#showVideoFeed()
+	 */
+	@Override
 	public void showVideoFeed(){
 		videoFrame.setVisible(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#hideVideoFeed()
+	 */
+	@Override
 	public void hideVideoFeed(){
 		videoFrame.setVisible(false);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#addListenerName(java.lang.String)
+	 */
+	@Override
 	public synchronized void addListenerName(String name){
 		listenerData.addElement(name);
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#removeListenerName(java.lang.String)
+	 */
+	@Override
 	public synchronized void removeListenerName(String name){
 		listenerData.removeElement(name);
 	}
 	
+	/* (non-Javadoc)
+	 * @see dtu.cdio.tutorial.gui.DebugGui#getSpeedVal()
+	 */
+	@Override
 	public int getSpeedVal(){
 		try{
 		return Math.abs(Integer.valueOf(this.speedVal.getText()));
@@ -1051,7 +1392,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		}
 	}
 
-	@Override
+
 	public void run() {
 		new Timer(500, new ActionListener() {
 			

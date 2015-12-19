@@ -2,14 +2,19 @@ package dtu.cdio.tutorial.listeners;
 
 import de.yadrone.base.navdata.Altitude;
 import de.yadrone.base.navdata.AltitudeListener;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * for gui. max delta should show if there is great change in measurements.
+ */
 public class AltitudeListenerImpl implements AltitudeListener {
 
-	private DroneVariablesGUI gui;
+	private DebugGui gui;
 	private int prevAltitude = 0;
 	private int maxDeltaAltitude = 0;
-	public AltitudeListenerImpl(DroneVariablesGUI gui) {
+	public AltitudeListenerImpl(DebugGui gui) {
 		this.gui = gui;
 		if(gui != null) gui.addListenerName("altitude listener");
 	}

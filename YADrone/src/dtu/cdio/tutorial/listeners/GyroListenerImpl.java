@@ -3,12 +3,17 @@ package dtu.cdio.tutorial.listeners;
 import de.yadrone.base.navdata.GyroListener;
 import de.yadrone.base.navdata.GyroPhysData;
 import de.yadrone.base.navdata.GyroRawData;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * for gui. shows info about gui. have not found out what to use it for yet.
+ */
 public class GyroListenerImpl implements GyroListener{
 
-	private DroneVariablesGUI gui;
-	public GyroListenerImpl(DroneVariablesGUI gui) {
+	private DebugGui gui;
+	public GyroListenerImpl(DebugGui gui) {
 		this.gui = gui;
 		if(gui != null) gui.addListenerName("Gyro listener");
 	}

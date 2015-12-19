@@ -16,14 +16,21 @@ import de.yadrone.base.navdata.HDVideoStreamData;
 import de.yadrone.base.navdata.VideoListener;
 import de.yadrone.base.navdata.VideoStreamData;
 import de.yadrone.base.video.ImageListener;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * for gui. can be used for program as well to process image. 
+ * contains methods for converting bufferedImage from drone to Mat in OpenCV and 
+ * the other way around.
+ */
 public class VideoListenerImpl implements ImageListener {
 
-	private DroneVariablesGUI gui;
+	private DebugGui gui;
 	private boolean showRawImg = true;
 	private boolean frameSizeSet = false;
-	public VideoListenerImpl(DroneVariablesGUI gui, boolean showRawImg) {
+	public VideoListenerImpl(DebugGui gui, boolean showRawImg) {
 		System.out.println("loading openCV native library...");
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.out.println("loading complete");

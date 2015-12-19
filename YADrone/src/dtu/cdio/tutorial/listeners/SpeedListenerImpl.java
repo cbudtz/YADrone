@@ -1,14 +1,18 @@
 package dtu.cdio.tutorial.listeners;
 
 import de.yadrone.base.ARDrone.ISpeedListener;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * listener created for GUI. makes user able to see speed.
+ */
 public class SpeedListenerImpl implements ISpeedListener {
 
-	private int deltaSpeed;
-	private int prevSpeed = 0;
-	private DroneVariablesGUI gui;
-	public SpeedListenerImpl(DroneVariablesGUI gui){
+
+	private DebugGui gui;
+	public SpeedListenerImpl(DebugGui gui){
 		this.gui = gui;
 		if(gui != null) gui.addListenerName("speed listener");
 	}
@@ -17,11 +21,8 @@ public class SpeedListenerImpl implements ISpeedListener {
 		
 		if(gui != null) {
 			gui.setSpeed(speed);
-			if(Math.abs(speed-prevSpeed) > Math.abs(deltaSpeed))
-				gui.setSpeedMaxDelta((deltaSpeed = speed-prevSpeed));
 		}
 		
-		prevSpeed = speed;
 	}
 
 }

@@ -1,15 +1,18 @@
 package dtu.cdio.tutorial.listeners;
 
 import de.yadrone.base.navdata.BatteryListener;
-import dtu.cdio.tutorial.gui.DroneVariablesGUI;
+import dtu.cdio.tutorial.gui.DebugGui;
 
+/**
+ * 
+ * @author Runi
+ * shows % of battery left. used for gui. 
+ */
 public class BatteryListenerImpl implements BatteryListener {
 
-	private DroneVariablesGUI gui;
-	private int prevBattery;
-	private int batteryMaxDelta;
+	private DebugGui gui;
 	
-	public BatteryListenerImpl(DroneVariablesGUI gui) {
+	public BatteryListenerImpl(DebugGui gui) {
 		this.gui = gui;
 		if(gui != null) gui.addListenerName("battery listener");
 	}
