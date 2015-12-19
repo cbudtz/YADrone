@@ -29,8 +29,20 @@ import de.yadrone.base.video.VideoManager;
 
 public interface IARDrone {
 
+	/**
+	 * Returns the {@link CommandManager} object. Instantiates a new CommandManager if needed.
+	 * @return CommandManager
+	 */
 	public CommandManager getCommandManager();
+	/**
+	 * Returns the {@link NavDataManager} object. Instantiates a new NavDataManager if needed.
+	 * @return NavDataManager
+	 */
 	public NavDataManager getNavDataManager();
+	/**
+	 * Returns the {@link VideoManager} object. Instantiates a new VideoManager if needed.
+	 * @return
+	 */
 	public VideoManager getVideoManager();
 	public ConfigurationManager getConfigurationManager();
 	
