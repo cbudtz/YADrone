@@ -22,7 +22,7 @@ import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
 import dtu.cdio.tutorial.listeners.StateListenerImpl;
 import dtu.cdio.tutorial.listeners.VideoListenerImpl;
 
-public class TutorialMain implements ActionListener
+public class TutorialMain implements ActionListener, Commander
 {
 
 	private boolean emergency = false;
@@ -53,9 +53,9 @@ public class TutorialMain implements ActionListener
 
 			// Tutorial Section 4
 			//			TutorialCommander commander = new TutorialCommander(drone);
-
+			
 			drone.addSpeedListener(new SpeedListenerImpl(gui));
-			drone.getNavDataManager().addAttitudeListener(new AttitudeListenerImpl(gui));
+			drone.getNavDataManager().addAttitudeListener(new AttitudeListenerImpl(gui, this));
 			drone.getNavDataManager().addAltitudeListener(new AltitudeListenerImpl(gui));
 			drone.getNavDataManager().addBatteryListener(new BatteryListenerImpl(gui));
 			drone.getNavDataManager().addGyroListener(new GyroListenerImpl(gui));
@@ -300,20 +300,64 @@ public class TutorialMain implements ActionListener
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
+		ButtonCmd cmd;
+		try{
+		cmd = ButtonCmd.valueOf(e.getActionCommand());
+		}catch(Exception ex){
+			return;
+		}
+		switch(cmd){
+		case ANIMATION_SET:
+			drone.getCommandManager().setLedsAnimation(gui.getAnimationSelected(), gui.getAnimationFrequency(), gui.getAnimationDuration());
+			break;
+		case AUTO_TRIM:
+			drone.getCommandManager().flatTrim();
+			break;
+		case EMERGENCY:
+			drone.getCommandManager().emergency();
+			break;
+		case FREEZE:
+			drone.getCommandManager().freeze();	
+			break;
+		case HOVER:
+			drone.getCommandManager().hover();
+			break;
+		case LAND:
+			drone.getCommandManager().landing();
+			break;
+		case MANUAL_TRIM:
+			drone.getCommandManager().manualTrim(gui.getPitchTrim(), gui.getRollTrim(), gui.getYawTrim());
+			break;
+		case SPEED_SET:
+			drone.setSpeed(gui.getSpeedVal());
+			break;
+		case TAKE_OFF:
+			drone.getCommandManager().takeOff();
+			break;
+		case RUN_PROGRAM:
+			runProgram();
+			break;
+		default:
+			System.err.println("no action bound to button command");
+			break;
 		
-		if(cmd.equals(ButtonCmd.LAND.name())) drone.getCommandManager().landing();
-		else if(cmd.equals(ButtonCmd.TAKE_OFF.name())) drone.getCommandManager().takeOff();
-		else if(cmd.equals(ButtonCmd.SPEED_SET.name())) drone.setSpeed(gui.getSpeedVal());
-		else if(cmd.equals(ButtonCmd.EMERGENCY.name())) drone.getCommandManager().emergency();
-		else if(cmd.equals(ButtonCmd.TRIM.name())) drone.getCommandManager().flatTrim();
-		else if(cmd.equals(ButtonCmd.ANIMATION_SET.name())) drone.getCommandManager().setLedsAnimation(gui.getAnimationSelected(), 5, 5);
-		else if(cmd.equals(ButtonCmd.HOVER.name())) drone.getCommandManager().hover();
-		else if(cmd.equals(ButtonCmd.FREEZE.name())) drone.getCommandManager().freeze();
-		else System.err.println("unknown button command");
+		}
 		
 //		drone.getCommandManager().hover();
 //		drone.getCommandManager().freeze();
 //		drone.getCommandManager().setLedsAnimation(, freq, duration)
+	}
+	
+	public volatile int yaw = 1;
+	private Program program1;
+	public void runProgram(){
+		this.program1 = new Program(drone);
+		new Thread(this.program1).start();
+	}
+	@Override
+	public void setYaw(int yaw) {
+		this.yaw = yaw;
+		if(program1 != null) this.program1.setYaw(yaw);
+		
 	}
 }

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.JComboBox;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import de.yadrone.base.command.LEDAnimation;
 
@@ -25,8 +24,6 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final int width = 500;
-	private final int height = 400;
 	private final String title = "Drone navdata";
 	
 	private JTextField speed;
@@ -95,7 +92,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private JButton land;
 	private JButton takeOff;
 	private JButton btnEmergency;
-	private JButton trim;
+	private JButton autoTrim;
 	private JButton btnSetAnimation;
 	private JLabel lblGyro;
 	private JTextField gyroXVal;
@@ -112,7 +109,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private DefaultListModel<String> listenerData;
 	private JFrame videoFrame;
 	private JComboBox<LEDAnimation> animationOptions;
-	public enum ButtonCmd{SPEED_SET, SPEED_DOWN, LAND, TAKE_OFF, EMERGENCY, TRIM, ANIMATION_SET, FREEZE, HOVER};
+	public enum ButtonCmd{SPEED_SET, LAND, TAKE_OFF, EMERGENCY, AUTO_TRIM, MANUAL_TRIM, ANIMATION_SET, FREEZE, HOVER, RUN_PROGRAM};
 	
 	private ArrayList<JLabel> alarmStates = new ArrayList<JLabel>();
 	private Color alarmOnColor = Color.red;
@@ -122,6 +119,18 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 	private JLabel lblSpeed_1;
 	private JButton btnHover;
 	private JButton btnFreeze;
+	private JTextField pitchTrim;
+	private JLabel lblPitch_2;
+	private JLabel lblRoll_2;
+	private JTextField rollTrim;
+	private JTextField yawTrim;
+	private JLabel lblYaw_1;
+	private JButton manualTrim;
+	private JLabel lblFrequency;
+	private JTextField animFrequency;
+	private JLabel lblDurations;
+	private JTextField animDuration;
+	private JButton btnRunProgram;
 	
 	public DroneVariablesGUI(){
 		videoFrame = new JFrame();
@@ -528,17 +537,17 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		getContentPane().add(stateUserFeedbackOn);
 				
 		speedSet = new JButton("Set");
-		speedSet.setBounds(750, 191, 56, 25);
+		speedSet.setBounds(750, 255, 56, 25);
 		getContentPane().add(speedSet);
 		speedSet.setActionCommand(ButtonCmd.SPEED_SET.name());
 		
 		lblSpeedUp = new JLabel("% (1-100)");
-		lblSpeedUp.setBounds(682, 191, 61, 25);
+		lblSpeedUp.setBounds(682, 255, 61, 25);
 		getContentPane().add(lblSpeedUp);
 		
 		speedVal = new JTextField();
 		speedVal.setText("25");
-		speedVal.setBounds(501, 193, 169, 22);
+		speedVal.setBounds(501, 257, 169, 22);
 		getContentPane().add(speedVal);
 		speedVal.setColumns(10);
 		
@@ -557,10 +566,10 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		btnEmergency.setBounds(501, 35, 96, 35);
 		getContentPane().add(btnEmergency);
 		
-		trim = new JButton("Trim");
-		trim.setActionCommand(ButtonCmd.TRIM.name());
-		trim.setBounds(501, 83, 96, 35);
-		getContentPane().add(trim);
+		autoTrim = new JButton("Auto trim");
+		autoTrim.setActionCommand(ButtonCmd.AUTO_TRIM.name());
+		autoTrim.setBounds(501, 83, 96, 35);
+		getContentPane().add(autoTrim);
 		
 		lblGyro = new JLabel("gyro");
 		lblGyro.setBounds(233, 13, 38, 16);
@@ -634,7 +643,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		
 		btnSetAnimation = new JButton("Set");
 		btnSetAnimation.setActionCommand(ButtonCmd.ANIMATION_SET.name());
-		btnSetAnimation.setBounds(750, 145, 56, 25);
+		btnSetAnimation.setBounds(750, 145, 56, 66);
 		getContentPane().add(btnSetAnimation);
 		
 		lblLedAnimation = new JLabel("led animation");
@@ -642,7 +651,7 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		getContentPane().add(lblLedAnimation);
 		
 		lblSpeed_1 = new JLabel("speed");
-		lblSpeed_1.setBounds(501, 178, 56, 16);
+		lblSpeed_1.setBounds(501, 242, 56, 16);
 		getContentPane().add(lblSpeed_1);
 		
 		btnHover = new JButton("Hover");
@@ -654,6 +663,68 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		btnFreeze.setBounds(711, 83, 96, 35);
 		btnFreeze.setActionCommand(ButtonCmd.FREEZE.name());
 		getContentPane().add(btnFreeze);
+		
+		JLabel lblManualTrim = new JLabel("manual trim");
+		lblManualTrim.setBounds(501, 290, 68, 14);
+		getContentPane().add(lblManualTrim);
+		
+		pitchTrim = new JTextField();
+		pitchTrim.setText("0");
+		pitchTrim.setBounds(501, 315, 49, 22);
+		getContentPane().add(pitchTrim);
+		pitchTrim.setColumns(10);
+		
+		lblPitch_2 = new JLabel("pitch");
+		lblPitch_2.setBounds(501, 301, 46, 14);
+		getContentPane().add(lblPitch_2);
+		
+		lblRoll_2 = new JLabel("roll");
+		lblRoll_2.setBounds(560, 301, 46, 14);
+		getContentPane().add(lblRoll_2);
+		
+		rollTrim = new JTextField();
+		rollTrim.setText("0");
+		rollTrim.setBounds(560, 315, 49, 22);
+		getContentPane().add(rollTrim);
+		rollTrim.setColumns(10);
+		
+		yawTrim = new JTextField();
+		yawTrim.setText("0");
+		yawTrim.setBounds(619, 315, 49, 22);
+		getContentPane().add(yawTrim);
+		yawTrim.setColumns(10);
+		
+		lblYaw_1 = new JLabel("yaw");
+		lblYaw_1.setBounds(619, 301, 46, 14);
+		getContentPane().add(lblYaw_1);
+		
+		manualTrim = new JButton("Trim");
+		manualTrim.setBounds(684, 314, 122, 25);
+		manualTrim.setActionCommand(ButtonCmd.MANUAL_TRIM.name());
+		getContentPane().add(manualTrim);
+		
+		lblFrequency = new JLabel("frequency (1/s)");
+		lblFrequency.setBounds(501, 175, 92, 14);
+		getContentPane().add(lblFrequency);
+		
+		animFrequency = new JTextField();
+		animFrequency.setBounds(501, 189, 92, 22);
+		getContentPane().add(animFrequency);
+		animFrequency.setColumns(10);
+		
+		lblDurations = new JLabel("duration (s)");
+		lblDurations.setBounds(603, 175, 67, 14);
+		getContentPane().add(lblDurations);
+		
+		animDuration = new JTextField();
+		animDuration.setBounds(603, 189, 67, 22);
+		getContentPane().add(animDuration);
+		animDuration.setColumns(10);
+		
+		btnRunProgram = new JButton("Run program");
+		btnRunProgram.setBounds(622, 617, 200, 50);
+		btnRunProgram.setActionCommand(ButtonCmd.RUN_PROGRAM.name());
+		getContentPane().add(btnRunProgram);
 		
 		addAlarmStates();
 		setVisible(true);
@@ -888,11 +959,28 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 		this.takeOff.addActionListener(listener);
 		this.speedSet.addActionListener(listener);
 		this.btnEmergency.addActionListener(listener);
-		this.trim.addActionListener(listener);
+		this.autoTrim.addActionListener(listener);
 		this.btnSetAnimation.addActionListener(listener);
 		this.btnFreeze.addActionListener(listener);
 		this.btnHover.addActionListener(listener);
-		
+		this.manualTrim.addActionListener(listener);
+		this.btnRunProgram.addActionListener(listener);
+	}
+	
+	public float getAnimationFrequency(){
+		try{
+			return Float.valueOf(this.animFrequency.getText());
+		}catch(Exception e){
+			return 1;
+		}
+	}
+	
+	public int getAnimationDuration(){
+		try{
+			return Integer.valueOf(this.animDuration.getText());
+		}catch(Exception e){
+			return 5;
+		}
 	}
 	
 	public void setAnimationOptions(LEDAnimation[] options){
@@ -904,6 +992,30 @@ public class DroneVariablesGUI extends JFrame implements Runnable{
 			return (LEDAnimation) this.animationOptions.getSelectedItem();
 		}
 		return LEDAnimation.BLANK;
+	}
+	
+	public float getRollTrim(){
+		try{
+			return Float.valueOf(this.rollTrim.getText());
+		}catch(Exception e){
+			return 0;
+		}
+	}
+	
+	public float getPitchTrim(){
+		try{
+			return Float.valueOf(this.pitchTrim.getText());
+		}catch(Exception e){
+			return 0;
+		}
+	}
+	
+	public float getYawTrim(){
+		try{
+			return Float.valueOf(this.yawTrim.getText());
+		}catch(Exception e){
+			return 0;
+		}
 	}
 	
 	public void setImage(BufferedImage img){

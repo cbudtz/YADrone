@@ -1,6 +1,7 @@
 package dtu.cdio.tutorial.listeners;
 
 import de.yadrone.base.navdata.AttitudeListener;
+import dtu.cdio.tutorial.Commander;
 import dtu.cdio.tutorial.gui.DroneVariablesGUI;
 
 public class AttitudeListenerImpl implements AttitudeListener {
@@ -20,9 +21,10 @@ public class AttitudeListenerImpl implements AttitudeListener {
 	private int pitchCompMaxDelta;
 	private int rollCompMaxDelta;
 	
-	
-	public AttitudeListenerImpl(DroneVariablesGUI gui) {
+	private Commander commander;
+	public AttitudeListenerImpl(DroneVariablesGUI gui, Commander commander) {
 		this.gui = gui;
+		this.commander = commander;
 		if(gui != null) gui.addListenerName("attitude listener");
 	}
 
@@ -47,6 +49,7 @@ public class AttitudeListenerImpl implements AttitudeListener {
 			prevPitchUpdated = pInt;
 			prevRollUpdated = rInt;
 			prevYawUpdated = yInt;
+			commander.setYaw(yInt);
 		}
 	}
 
@@ -58,16 +61,17 @@ public class AttitudeListenerImpl implements AttitudeListener {
 	@Override
 	public void windCompensation(float pitch, float roll) {
 		if(gui != null){
-//			gui.setPitchComp(pitch);
-//			gui.setRollComp(roll);
-//			
-//			if(Math.abs(pitch-prevPitchComp) > Math.abs(pitchCompMaxDelta))
-//				gui.setPitchCompMaxDelta((pitchCompMaxDelta = pitch-prevPitchComp));
-//			if(Math.abs(roll-prevRollComp) > Math.abs(rollCompMaxDelta))
-//				gui.setRollCompMaxDelta((rollCompMaxDelta = roll-prevRollComp));
-//			
-//			prevPitchComp = pitch;
-//			prevRollComp = roll;
+			gui.setPitchComp(pitch);
+			gui.setRollComp(roll);
+			int pInt = (int) pitch/1000;
+			int rInt = (int) roll/1000;
+			if(Math.abs(pitch-prevPitchComp) > Math.abs(pitchCompMaxDelta))
+				gui.setPitchCompMaxDelta((pitchCompMaxDelta = pInt-prevPitchComp));
+			if(Math.abs(roll-prevRollComp) > Math.abs(rollCompMaxDelta))
+				gui.setRollCompMaxDelta((rollCompMaxDelta = rInt-prevRollComp));
+			
+			prevPitchComp = pInt;
+			prevRollComp = rInt;
 		}
 	}
 
