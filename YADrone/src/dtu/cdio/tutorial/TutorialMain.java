@@ -3,7 +3,6 @@ package dtu.cdio.tutorial;
 
 import de.yadrone.base.ARDrone;
 import de.yadrone.base.command.LEDAnimation;
-import dtu.cdio.tutorial.controllers.YawAndLand;
 import dtu.cdio.tutorial.gui.DroneVariablesGUI;
 import dtu.cdio.tutorial.listeners.AltitudeListenerImpl;
 import dtu.cdio.tutorial.listeners.AttitudeListenerImpl;
@@ -14,6 +13,7 @@ import dtu.cdio.tutorial.listeners.PressureListenerImpl;
 import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
 import dtu.cdio.tutorial.listeners.StateListenerImpl;
 import dtu.cdio.tutorial.listeners.VideoListenerImpl;
+import dtu.cdio.tutorial.programs.YawAndLand;
 
 /**
  * 

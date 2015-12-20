@@ -1,9 +1,8 @@
-package dtu.cdio.tutorial.controllers;
+package dtu.cdio.tutorial.programs;
 
 import java.awt.image.BufferedImage;
 
 import de.yadrone.base.IARDrone;
-import dtu.cdio.tutorial.programs.ProgramImpl;
 
 /**
  * 
