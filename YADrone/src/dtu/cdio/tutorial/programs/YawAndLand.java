@@ -3,6 +3,16 @@ package dtu.cdio.tutorial.programs;
 import java.awt.image.BufferedImage;
 
 import de.yadrone.base.IARDrone;
+import de.yadrone.base.navdata.ControlState;
+import de.yadrone.base.navdata.DroneState;
+import dtu.cdio.tutorial.listeners.AltitudeListenerImpl;
+import dtu.cdio.tutorial.listeners.AttitudeListenerImpl;
+import dtu.cdio.tutorial.listeners.BatteryListenerImpl;
+import dtu.cdio.tutorial.listeners.GyroListenerImpl;
+import dtu.cdio.tutorial.listeners.PressureListenerImpl;
+import dtu.cdio.tutorial.listeners.SpeedListenerImpl;
+import dtu.cdio.tutorial.listeners.StateListenerImpl;
+import dtu.cdio.tutorial.listeners.VideoListenerImpl;
 
 /**
  * 
@@ -15,6 +25,7 @@ public class YawAndLand extends ProgramImpl{
 
 	private IARDrone drone;
 	private volatile boolean doStop;
+	private volatile boolean isFlying;
 	public YawAndLand(IARDrone drone){
 		this.drone = drone;
 		drone.addSpeedListener(this);
@@ -25,11 +36,13 @@ public class YawAndLand extends ProgramImpl{
 		drone.getNavDataManager().addPressureListener(this);
 		drone.getNavDataManager().addStateListener(this);
 		drone.getVideoManager().addImageListener(this);
+		
+		
 	}
 	
 	@Override
 	public void run() {
-		drone.takeOff();
+		if(!isFlying) drone.takeOff();
 		while(!doStop){
 			drone.spinLeft();
 			delay(100);
@@ -49,6 +62,20 @@ public class YawAndLand extends ProgramImpl{
 			
 		}
 	}
+	
+	@Override
+	public void controlStateChanged(de.yadrone.base.navdata.ControlState state) {
+		if(state.equals(ControlState.LANDED)){
+			isFlying = false;
+		}else{
+			isFlying = true;
+		}
+	};
+	
+	@Override
+	public void stateChanged(DroneState state) {
+		
+	};
 
 	@Override
 	public void imageUpdated(BufferedImage image) {

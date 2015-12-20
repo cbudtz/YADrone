@@ -54,7 +54,6 @@ public class StateListenerImpl implements StateListener {
 	private volatile boolean VisionDefined = false;
 	private volatile boolean VisionEnabled = false;
 	
-	public TutorialMain test;
 	public StateListenerImpl(DebugGui gui){
 		this.gui = gui;
 		if(gui != null) gui.addListenerName("state listener");
@@ -103,7 +102,6 @@ public class StateListenerImpl implements StateListener {
 			if(VisionEnabled != state.isVisionEnabled()) gui.setStateVisionEnabled(VisionEnabled = state.isVisionEnabled());
 		}
 		
-		test.isFlying = state.isFlying();
 	}
 
 	@Override
