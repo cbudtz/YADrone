@@ -35,23 +35,27 @@ public class YawAndLand extends ProgramImpl{
 		drone.getNavDataManager().addGyroListener(this);
 		drone.getNavDataManager().addPressureListener(this);
 		drone.getNavDataManager().addStateListener(this);
-		drone.getVideoManager().addImageListener(this);
-		
-		
+		drone.getVideoManager().addImageListener(this);	
 	}
 	
 	@Override
 	public void run() {
-		if(!isFlying) drone.takeOff();
+		// only takeoff if not already flying. otherwise the drone will crash.
+		if(!isFlying) drone.takeOff(); 
+		
+		// program main loop.
 		while(!doStop){
 			drone.spinLeft();
 			delay(100);
 		}
+		
+		// when program is done we land
 		drone.landing();
 	}
 
 	@Override
 	public void attitudeUpdated(float pitch, float roll, float yaw) {
+		// stop program if yaw angle is <0
 		if(yaw < 0) doStop = true;
 	};
 
