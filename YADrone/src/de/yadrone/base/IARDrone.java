@@ -44,40 +44,115 @@ public interface IARDrone {
 	 * @return
 	 */
 	public VideoManager getVideoManager();
+	/** 
+	 * Returns the {@link ConfigurationManager} object. Instantiates a new Manager if needed.
+	 * @return
+	 */
 	public ConfigurationManager getConfigurationManager();
 	
 	
 	//TODO: cleanup, if kept, factory method should be created for ARDroneInterface
-	
+	/**
+	 * Instantiates all 4 manager objects.
+	 */
 	public void start();
+	/**
+	 * Cleans up manager objects.
+	 */
 	public void stop();
 	
 	//camera
+	/**
+	 * Switches to horizontal camera.
+	 */
 	public void setHorizontalCamera();//setFrontCameraStreaming()
+	/**
+	 * Switches to vertical camera.
+	 */
 	public void setVerticalCamera();//setBellyCameraStreaming()
+	/** 
+	 * Switches to horizontal camera with small vertical camera image in corner.
+	 */
 	public void setHorizontalCameraWithVertical();//setFrontCameraWithSmallBellyStreaming()
+	/** 
+	 * Switches to vertical camera with small horizontal camera image in corner.
+	 */
 	public void setVerticalCameraWithHorizontal();//setBellyCameraWithSmallFrontStreaming()
+	/** 
+	 * Switches between cameras
+	 */
 	public void toggleCamera();
 	
 	//control command
+	/**
+	 * Lands drone in a standardized way.
+	 */
 	public void landing();
+	/**
+	 * Causes drone to takeOff.
+	 */
 	public void takeOff();
+	/**
+	 * Invokes emergency signal on Drone. If drone is already in emergency state, emergency state is cleared.
+	 */
 	public void reset();
+	/**
+	 * Causes drone to fly forward with speed specified be setSpeed().
+	 */
 	public void forward();
+	/**
+	 * Causes drone to fly backward with speed specified be setSpeed().
+	 */
 	public void backward();
+	/**
+	 * Causes drone to rotate right with speed specified be setSpeed().
+	 */
 	public void spinRight();
+	/**
+	 * Causes drone to rotate left with speed specified be setSpeed().
+	 */
 	public void spinLeft();
+	/**
+	 * Causes drone to fly upward with speed specified be setSpeed()
+	 */
 	public void up();
+	/**
+	 * Causes drone to fly downward with speed specified be setSpeed()
+	 */
 	public void down();
+	/**
+	 * Causes drone to strafe right with speed specified be setSpeed()
+	 */
 	public void goRight();
+	/**
+	 * Causes drone to strafe left with speed specified be setSpeed()
+	 */
 	public void goLeft();
+	/**
+	 * Stops drone at current position
+	 */
 	public void freeze();
+	/**
+	 * Causes drone to hover at current position
+	 */
 	public void hover();
 	
 	//getter
 	public int getSpeed();
+	/**
+	 * Sets speed for all movements in % of maximum speed (which can be configures).
+	 * @param speed
+	 */
 	public void setSpeed(int speed);
+	/**
+	 * Adds listener for set speed - Not actual flight speed!.
+	 * @param speedListener
+	 */
 	public void addSpeedListener(ISpeedListener speedListener);
+	/**
+	 * Removes listener for set speed.
+	 * @param speedListener
+	 */
 	public void removeSpeedListener(ISpeedListener speedListener);
 	
 	public void addExceptionListener(IExceptionListener exceptionListener);
@@ -86,6 +161,12 @@ public interface IARDrone {
 	//set max/min altitude
 	public void setMaxAltitude(int altitude);
 	public void setMinAltitude(int altitude);
-	
+	/**
+	 * Complex movement - allowing movement in all 3 directions, as well as rotation.
+	 * @param speedX
+	 * @param speedY
+	 * @param speedZ
+	 * @param speedSpin
+	 */
 	public void move3D(int speedX, int speedY, int speedZ, int speedSpin);
 }
