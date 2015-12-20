@@ -14,7 +14,7 @@ import de.yadrone.base.IARDrone;
 public class YawAndLand extends ProgramImpl{
 
 	private IARDrone drone;
-	private boolean doStop;
+	private volatile boolean doStop;
 	public YawAndLand(IARDrone drone){
 		this.drone = drone;
 		drone.addSpeedListener(this);
